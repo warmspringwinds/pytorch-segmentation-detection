@@ -17,6 +17,9 @@ class FCN_32s(nn.Module):
         # Copy all the feature layers as is
         self.features = vgg16.features
         
+        # TODO: check if Dropout works correctly for
+        # fully convolutional mode
+        
         # Remove the last classification 1x1 convolution
         # because it comes from imagenet 1000 class classification.
         # We will perform classification on different classes
