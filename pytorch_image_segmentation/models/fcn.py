@@ -1,7 +1,5 @@
 import torch.nn as nn
 import torchvision.models as models
-import torch.utils.model_zoo as model_zoo
-from torchvision.models.vgg import model_urls
 
 
 class FCN_32s(nn.Module):
@@ -11,13 +9,17 @@ class FCN_32s(nn.Module):
         
         super(FCN_32s, self).__init__()
         
+        # Load the model with convolutionalized
+        # fully connected layers
         vgg16 = models.vgg16(pretrained=True,
                              fully_conv=True)
         
-        # Copy all the features
+        # Copy all the feature layers as is
         self.features = vgg16.features
         
         # Remove the last classification 1x1 convolution
+        # because it comes from imagenet 1000 class classification.
+        # We will perform classification on different classes
         fully_conv = list(vgg16.classifier.children())
         fully_conv = fully_conv[:-1]
         self.fully_conv = nn.Sequential(*fully_conv)
