@@ -1,3 +1,8 @@
+
+# TODO: Some folder settings were changed compared to the original
+# repository -- need to change the realtive paths for pascal voc here
+# More specifically, the folder that is created after untarring the pascal
+# is named VOCdevkit now instead of VOC2012
 import skimage.io as io
 import numpy as np
 import os
@@ -49,7 +54,7 @@ def get_pascal_segmentation_images_lists_txts(pascal_root):
         Array that contains paths for train/val/trainval txts with images names.
     """
     
-    segmentation_images_lists_relative_folder = 'ImageSets/Segmentation'
+    segmentation_images_lists_relative_folder = 'VOC2012/ImageSets/Segmentation'
     
     segmentation_images_lists_folder = os.path.join(pascal_root,
                                                     segmentation_images_lists_relative_folder)
