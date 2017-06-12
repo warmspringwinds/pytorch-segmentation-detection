@@ -439,8 +439,8 @@ def get_pascal_selected_image_annotation_filenames_pairs(pascal_root, selected_n
     image_annotation_pairs : 
         Array with filename pairs with fullnames.
     """
-    pascal_relative_images_folder = 'JPEGImages'
-    pascal_relative_class_annotations_folder = 'SegmentationClass'
+    pascal_relative_images_folder = 'VOC2012/JPEGImages'
+    pascal_relative_class_annotations_folder = 'VOC2012/SegmentationClass'
     
     images_extention = 'jpg'
     annotations_extention = 'png'
