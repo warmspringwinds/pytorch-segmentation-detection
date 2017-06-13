@@ -82,8 +82,6 @@ class PascalVOCSegmentation(data.Dataset):
         
         # TODO: maybe can be done in a better way
         _target = Image.open(annotation_path)
-        #_target = torch.from_numpy( np.asarray(Image.open(annotation_path)) ).long()
-        #_target = torch.unsqueeze(_target, 0)
 
         if self.transform is not None:
             _img = self.transform(_img)
