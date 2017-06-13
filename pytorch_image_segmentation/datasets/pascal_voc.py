@@ -1,10 +1,19 @@
+import torch
 import torch.utils.data as data
+
+import numpy as np
+
 from six.moves import urllib
+from PIL import Image
 import tarfile
 import os, sys
 
+from ..utils.pascal_voc import get_augmented_pascal_image_annotation_filename_pairs
+from ..utils.pascal_voc import convert_pascal_berkeley_augmented_mat_annotations_to_png
+
 
 class PascalVOCSegmentation(data.Dataset):
+
     
     CLASS_NAMES = ['background', 'aeroplane', 'bicycle', 'bird', 'boat',
                    'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable',
@@ -27,7 +36,8 @@ class PascalVOCSegmentation(data.Dataset):
                  train=True,
                  transform=None,
                  target_transform=None,
-                 download=False):
+                 download=False,
+                 split_mode=2):
         
         self.root = root
         self.pascal_tar_full_download_filename = os.path.join(self.root, self.PASCAL_TAR_FILENAME)
@@ -36,14 +46,54 @@ class PascalVOCSegmentation(data.Dataset):
         self.pascal_full_root_folder_path = os.path.join(self.root, self.PASCAL_ROOT_FOLDER_NAME)
         self.berkeley_full_root_folder_path = os.path.join(self.root, self.BERKELEY_ROOT_FOLDER_NAME)
         
+        self.transform = transform
+        self.target_transform = target_transform
+        
         if download:
             
             self._download_dataset()
             self._extract_dataset()
+            self._prepare_dataset()
         
         
+        pascal_annotation_filename_pairs_train_val = get_augmented_pascal_image_annotation_filename_pairs(
+                                                          self.pascal_full_root_folder_path,
+                                                          self.berkeley_full_root_folder_path,
+                                                          mode=split_mode)
+        if train:
+            
+            self.img_anno_pairs = pascal_annotation_filename_pairs_train_val[0]
+            
+        else:
+            
+            self.img_anno_pairs = pascal_annotation_filename_pairs_train_val[1]
+            
+            
         
+    def __len__(self):
+        
+        return len(self.img_anno_pairs)
     
+    def __getitem__(self, index):
+        
+        img_path, annotation_path = self.img_anno_pairs[index]
+        
+        _img = Image.open(img_path).convert('RGB')
+        
+        # TODO: maybe can be done in a better way
+        _target = np.asarray(Image.open(annotation_path))
+        #_target = torch.from_numpy( np.asarray(Image.open(annotation_path)) ).long()
+        #_target = torch.unsqueeze(_target, 0)
+
+        if self.transform is not None:
+            _img = self.transform(_img)
+        
+        if self.target_transform is not None:
+            _target = self.target_transform(_target)
+
+        return _img, _target
+        
+        
     def _download_dataset(self):
         
         
@@ -64,19 +114,19 @@ class PascalVOCSegmentation(data.Dataset):
         # same operation two times
         if os.path.isfile(self.pascal_tar_full_download_filename):
             
-            print('PASCAL VOC segmentation dataset file already exists')
+            print('\n PASCAL VOC segmentation dataset file already exists')
         else:
             
-            print("Downloading PASCAL VOC segmentation dataset to {}".format(self.pascal_tar_full_download_filename))
+            print("\n Downloading PASCAL VOC segmentation dataset to {}".format(self.pascal_tar_full_download_filename))
             urllib.request.urlretrieve(self.PASCAL_URL, self.pascal_tar_full_download_filename, _progress)
             
             
         if os.path.isfile(self.berkeley_tar_full_download_filename):
             
-            print('Berkeley segmentation dataset file already exists')
+            print('\n Berkeley segmentation dataset file already exists')
         else:
             
-            print("Downloading Berkeley segmentation additional dataset to {}".format(self.berkeley_tar_full_download_filename))
+            print("\n Downloading Berkeley segmentation additional dataset to {}".format(self.berkeley_tar_full_download_filename))
             urllib.request.urlretrieve(self.BERKELEY_URL, self.berkeley_tar_full_download_filename, _progress)
         
     
@@ -91,8 +141,15 @@ class PascalVOCSegmentation(data.Dataset):
     
     def _extract_dataset(self):
         
-        print("Extracting PASCAL VOC segmentation dataset to {}".format(self.pascal_full_root_folder_path))
+        print("\n Extracting PASCAL VOC segmentation dataset to {}".format(self.pascal_full_root_folder_path))
         self._extract_tar_to_the_root_folder(self.pascal_tar_full_download_filename)
         
-        print("Extracting Berkeley segmentation dataset to {}".format(self.berkeley_full_root_folder_path))
+        print("\n Extracting Berkeley segmentation dataset to {}".format(self.berkeley_full_root_folder_path))
         self._extract_tar_to_the_root_folder(self.berkeley_tar_full_download_filename)
+        
+    def _prepare_dataset(self):
+        
+        print("\n Converting .mat files in the Berkeley dataset to pngs")
+        
+        convert_pascal_berkeley_augmented_mat_annotations_to_png(self.berkeley_full_root_folder_path)
+        
