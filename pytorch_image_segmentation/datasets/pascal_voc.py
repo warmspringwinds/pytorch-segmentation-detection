@@ -34,8 +34,7 @@ class PascalVOCSegmentation(data.Dataset):
     def __init__(self,
                  root,
                  train=True,
-                 transform=None,
-                 target_transform=None,
+                 joint_transform=None,
                  download=False,
                  split_mode=2):
         
@@ -46,8 +45,7 @@ class PascalVOCSegmentation(data.Dataset):
         self.pascal_full_root_folder_path = os.path.join(self.root, self.PASCAL_ROOT_FOLDER_NAME)
         self.berkeley_full_root_folder_path = os.path.join(self.root, self.BERKELEY_ROOT_FOLDER_NAME)
         
-        self.transform = transform
-        self.target_transform = target_transform
+        self.joint_transform = joint_transform
         
         if download:
             
@@ -83,12 +81,9 @@ class PascalVOCSegmentation(data.Dataset):
         # TODO: maybe can be done in a better way
         _target = Image.open(annotation_path)
 
-        if self.transform is not None:
-            _img = self.transform(_img)
+        if self.joint_transform is not None:
+            _img, _target = self.joint_transform([_img, _target])
         
-        if self.target_transform is not None:
-            _target = self.target_transform(_target)
-
         return _img, _target
         
         
