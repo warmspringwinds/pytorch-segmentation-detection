@@ -1,5 +1,6 @@
 import random
 import collections
+import numpy as np
 from PIL import Image
 
 
