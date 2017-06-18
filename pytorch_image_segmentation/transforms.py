@@ -20,9 +20,9 @@ class ComposeJoint(object):
     
     
     def _iterate_transforms(self, transforms, x):
-        "Credit @fmassa.
+        """Credit @fmassa:
          https://gist.github.com/fmassa/3df79c93e82704def7879b2f77cd45de
-        "
+        """
     
     
         if isinstance(transforms, collections.Iterable):
