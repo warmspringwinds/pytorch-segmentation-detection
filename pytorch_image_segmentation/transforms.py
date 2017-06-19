@@ -76,7 +76,7 @@ class RandomScaleJoint(object):
             
         return map(resize_input, zip(inputs, self.interpolations))
 
-    
+        
 class CropOrPad(object):
     
     
@@ -98,3 +98,28 @@ class CropOrPad(object):
         output.paste(input, box=tuple(input_position))
         
         return output
+
+    
+class ResizeAspectRatioPreserve(object):
+    
+    
+    def __init__(self, greater_side_size, interpolation=Image.BILINEAR):
+        
+        self.greater_side_size = greater_side_size
+        self.interpolation = interpolation
+
+    def __call__(self, input):
+       
+        w, h = input.size
+
+        if w > h:
+
+            ow = self.greater_side_size
+            oh = int( self.greater_side_size * h / w )
+            return input.resize((ow, oh), self.interpolation)
+
+        else:
+
+            oh = self.greater_side_size
+            ow = int(self.greater_side_size * w / h)
+            return input.resize((ow, oh), self.interpolation)
