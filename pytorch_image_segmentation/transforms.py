@@ -1,7 +1,41 @@
 import random
+import numbers
 import collections
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
+
+
+
+def pad_to_size(input_img, size, fill_label=0):
+    """Pads image to the size with fill_label if the input image is smaller"""
+
+    input_size = np.asarray(input_img.size)
+    padded_size = np.asarray(size)
+
+    difference = padded_size - input_size
+
+    parts_to_expand = difference > 0
+
+    expand_difference = difference * parts_to_expand
+
+    expand_difference_top_and_left = expand_difference // 2
+
+    expand_difference_bottom_and_right = expand_difference - expand_difference_top_and_left
+    
+    # Form the PIL config vector
+    pil_expand_array = np.concatenate( (expand_difference_top_and_left,
+                                        expand_difference_bottom_and_right) )
+    
+    processed_img = input_img
+    
+    # Check if we actually need to expand our image.
+    if pil_expand_array.any():
+        
+        pil_expand_tuple = tuple(pil_expand_array)
+        
+        processed_img = ImageOps.expand(input_img, border=pil_expand_tuple, fill=fill_label)
+    
+    return processed_img
 
 
 class ComposeJoint(object):
@@ -76,7 +110,53 @@ class RandomScaleJoint(object):
             
         return map(resize_input, zip(inputs, self.interpolations))
 
+
+    
+
+class RandomCropJoint(object):
+    
+    def __init__(self, crop_size, pad_values=[0, 255]):
         
+        if isinstance(crop_size, numbers.Number):
+            
+            self.crop_size = (int(crop_size), int(crop_size))
+        else:
+            
+            self.crop_size = crop_size
+        
+        self.pad_values = pad_values
+        
+
+    def __call__(self, inputs):
+        
+        
+        def padd_input(img_pad_value_pair):
+            
+            input = img_pad_value_pair[0]
+            pad_value = img_pad_value_pair[1]
+            
+            return pad_to_size(input, self.crop_size, pad_value)
+        
+        padded_inputs = map(padd_input, zip(inputs, self.pad_values))
+        
+        # We assume that inputs were of the same size before padding.
+        # So they are of the same size after the padding
+        w, h = padded_inputs[0].size
+        
+        th, tw = self.crop_size
+        
+        if w == tw and h == th:
+            return padded_inputs
+
+        x1 = random.randint(0, w - tw)
+        y1 = random.randint(0, h - th)
+        
+        outputs = map(lambda single_input: single_input.crop((x1, y1, x1 + tw, y1 + th)), padded_inputs)
+        
+        return outputs
+    
+    
+
 class CropOrPad(object):
     
     
