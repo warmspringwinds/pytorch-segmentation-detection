@@ -193,7 +193,82 @@ class Resnet34_32s(nn.Module):
         
         return x
 
+    
+class Resnet34_16s(nn.Module):
+    
+    
+    def __init__(self, num_classes=1000):
+        
+        super(Resnet34_16s, self).__init__()
+        
+        # Load the pretrained weights, remove avg pool
+        # layer and get the output stride of 8
+        resnet34_16s = models.resnet34(fully_conv=True,
+                                       pretrained=True,
+                                       output_stride=16,
+                                       remove_avg_pool_layer=True)
+        
+        # Randomly initialize the 1x1 Conv scoring layer
+        resnet34_16s.fc = nn.Conv2d(resnet34_16s.inplanes, num_classes, 1)
+        
+        self.resnet34_16s = resnet34_16s
+        
+        self._normal_initialization(self.resnet34_16s.fc)
+        
+        
+    def _normal_initialization(self, layer):
+        
+        layer.weight.data.normal_(0, 0.01)
+        layer.bias.data.zero_()
+        
+    def forward(self, x):
+        
+        input_spatial_dim = x.size()[2:]
+        
+        x = self.resnet34_16s(x)
+        
+        x = nn.functional.upsample_bilinear(input=x, size=input_spatial_dim)
+        
+        return x
 
+
+class Resnet34_8s(nn.Module):
+    
+    
+    def __init__(self, num_classes=1000):
+        
+        super(Resnet34_8s, self).__init__()
+        
+        # Load the pretrained weights, remove avg pool
+        # layer and get the output stride of 8
+        resnet34_8s = models.resnet34(fully_conv=True,
+                                       pretrained=True,
+                                       output_stride=8,
+                                       remove_avg_pool_layer=True)
+        
+        # Randomly initialize the 1x1 Conv scoring layer
+        resnet34_8s.fc = nn.Conv2d(resnet34_8s.inplanes, num_classes, 1)
+        
+        self.resnet34_8s = resnet34_8s
+        
+        self._normal_initialization(self.resnet34_8s.fc)
+        
+        
+    def _normal_initialization(self, layer):
+        
+        layer.weight.data.normal_(0, 0.01)
+        layer.bias.data.zero_()
+        
+    def forward(self, x):
+        
+        input_spatial_dim = x.size()[2:]
+        
+        x = self.resnet34_8s(x)
+        
+        x = nn.functional.upsample_bilinear(input=x, size=input_spatial_dim)
+        
+        return x
+    
 class Resnet50_32s(nn.Module):
     
     
