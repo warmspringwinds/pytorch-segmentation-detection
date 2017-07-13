@@ -77,9 +77,9 @@ This code has been used to train networks with this performance:
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       |41 ms.| [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
-| FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.  | in prog.     | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
-| FCN-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
+| FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       |41 ms.| [Dropbox](https://www.dropbox.com/s/8l049d19k46ts9b/fcn_32s_best.pth?dl=0)            |
+| FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.  | in prog.     | in prog.            |
+| FCN-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
 | FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10         | in prog. |                     |
 | FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00         | in prog. |                     |
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30         | in prog. |                     |
@@ -98,9 +98,9 @@ This code has been used to train networks with this performance:
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
-| Resnet-34-8s (ours)   | RV-VOC12  | 66.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
-| Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
+| Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            |
+| Resnet-34-8s (ours)   | RV-VOC12  | 66.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/tifnzxhwxvdodg6/resnet_34_8s_66.pth?dl=0)            |
+| Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
 | Resnet-18-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
 | Resnet-34-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
 | Resnet-101-8s (ours)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
