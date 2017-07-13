@@ -68,7 +68,7 @@ The code to acquire the training and validating the model is also provided in th
 ### Fully Convolutional Networks for Semantic Segmentation (FCNs)
 
 Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
-by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` and ```FCN-8s``` against PASCAL VOC 2012
+by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` (in prog.) and ```FCN-8s``` (in prog.) against PASCAL VOC 2012
 dataset.
 
 You can find all the scripts that were used for training and evaluation [here](dense_ai/recipes/pascal_voc/segmentation).
@@ -85,6 +85,25 @@ This code has been used to train networks with this performance:
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30         | in prog. |                     |
 
 
+### DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs
+
+
+Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
+by Long et al. We trained and tested ```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012
+dataset.
+
+You can find all the scripts that were used for training and evaluation [here](dense_ai/recipes/pascal_voc/segmentation).
+
+This code has been used to train networks with this performance:
+
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
+| Resnet-34-8s (ours)   | RV-VOC12  | 66.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
+| Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
+| Resnet-18-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
+| Resnet-34-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
+| Resnet-101-8s (ours)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
 
 ## About
 
