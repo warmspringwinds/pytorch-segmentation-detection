@@ -75,7 +75,7 @@ You can find all the scripts that were used for training and evaluation [here](d
 
 This code has been used to train networks with this performance:
 
-| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 image)| | Model Download Link |
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
 | FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       |41 ms.| [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
 | FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.  | in prog.     | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
