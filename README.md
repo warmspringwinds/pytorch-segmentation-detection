@@ -1,6 +1,6 @@
-# Dense-ai: Image Segmentation and Object Detection library
+# Dense-ai: Image Segmentation and Object Detection 
 
-```Dense-ai``` is a library for dense inference and training of Convolutional Neural Networks (CNNs) on Images.
+```Dense-ai``` is a library for dense inference and training of Convolutional Neural Networks (CNNs) on Images for Segmentation and Detection.
 The aim of the library is to provide/provide a simplified way to:
 
 - Converting some popular general/medical/other Image Segmentation and Detection Datasets into easy-to-use for training
