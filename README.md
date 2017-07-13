@@ -1,6 +1,7 @@
 # Dense-ai: Image Segmentation and Object Detection framework
 
-The aim of the ```Dense-ai``` framework is to provide/provide a simplified way for:
+```Dense-ai``` is a framework for dense inference and training on Images.
+The aim of the framework is to provide/provide a simplified way to:
 
 - Converting some popular general/medical/other Image Segmentation and Detection Datasets into easy-to-use for training
 format (Pytorch's dataloader).
@@ -74,14 +75,14 @@ You can find all the scripts that were used for training and evaluation [here](d
 
 This code has been used to train networks with this performance:
 
-| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
-|------------------|-----------|---------|--------------------|----------------|---------------------|
-| FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
-| FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
-| FCN-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
-| FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
-| FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
-| FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 image)| | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       |41 ms.| [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
+| FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.  | in prog.     | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
+| FCN-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
+| FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10         | in prog. |                     |
+| FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00         | in prog. |                     |
+| FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30         | in prog. |                     |
 
 
 
