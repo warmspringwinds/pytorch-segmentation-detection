@@ -105,6 +105,19 @@ This code has been used to train networks with this performance:
 | Resnet-34-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
 | Resnet-101-8s (ours)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
 
+
+## Applications
+
+We demonstrate applications of our library for a certain tasks which are being ported/ has already been ported to devices:
+
+1. [Sticker creation](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+
+2. [Iphone's portait effect](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+
+3. [Background replacement](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+
+4. Surgical Robotic Tools Segmentation (see below)
+
 ## About
 
 If you used the code for your research, please, cite the paper:
