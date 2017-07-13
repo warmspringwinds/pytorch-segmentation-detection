@@ -108,7 +108,7 @@ This code has been used to train networks with this performance:
 
 ## Applications
 
-We demonstrate applications of our library for a certain tasks which are being ported/ has already been ported to devices:
+We demonstrate applications of our library for a certain tasks which are being ported/ has already been ported to mobile devices:
 
 1. [Sticker creation](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
 
