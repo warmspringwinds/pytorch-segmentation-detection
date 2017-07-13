@@ -1,9 +1,9 @@
-# Pytorch-image-segmentation: Image Segmentation framework
+# Dense-ai: Image Segmentation and Object Detection framework
 
-The aim of the ```TF Image Segmentation``` framework is to provide/provide a simplified way for:
+The aim of the ```Dense-ai``` framework is to provide/provide a simplified way for:
 
-- Converting some popular general/medical/other Image Segmentation Datasets into easy-to-use for training ```.tfrecords```
-format with unified interface: different datasets but same way to store images and annotations.
+- Converting some popular general/medical/other Image Segmentation Datasets into easy-to-use for training
+format (Pytorch's dataloader).
 - Training routine with on-the-fly data augmentation (scaling, color distortion).
 - Training routine that is proved to work for particular model/dataset pair.
 - Evaluating Accuracy of trained models with common accuracy measures: Mean IOU, Mean pix. accuracy, Pixel accuracy.
@@ -12,49 +12,44 @@ TF with reported training routine and not models that were converted from Caffe 
 - Model definitions (like FCN-32s and others) that use weights initializations from Image Classification models like
 VGG that are officially provided by TF-Slim library.
 
-So far, the framework contains an implementation of the FCN models (training
-and evaluation) in Tensorflow and TF-Slim library with training routine, reported accuracy,
-trained models for PASCAL VOC 2012 dataset. To train these models on your data, [convert your dataset
-to tfrecords](tf_image_segmentation/recipes/pascal_voc/convert_pascal_voc_to_tfrecords.ipynb) and follow the
-instructions below.
+So far, the framework contains an implementation of FCN-32s (Long et al.), Resnet-18-8s, Resnet-34-8s (Chen et al.) models in ```Pytorch``` and ```Pytorch/Vision``` library with training routine, reported accuracy,
+trained models for PASCAL VOC 2012 dataset. To train these models on your data, you will have
+to write a ```dataloader``` for your dataset.
 
-The end goal is to provide utilities to convert other datasets, report accuracies on them and provide models.
 
 ## Installation
 
 This code requires:
 
-1. Tensorflow ```r0.12``` or later version.
+1. [Pytorch](https://github.com/pytorch/pytorch).
 
-2. Custom [tensorflow/models](https://github.com/tensorflow/models) repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future.
+2. Our [pytorch/vision](https://github.com/pytorch/vision) fork, which might be [merged](https://github.com/pytorch/vision/pull/190) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
 
  Simply run:
  
- ```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
+ ```git clone -b fully_conv_resnet https://github.com/warmspringwinds/vision```
  
- And add ```models/slim``` subdirectory to your path:
+ And add ```pytorch/vision``` subdirectory to your path:
 
  ```python
  import sys
  # update with your path
- sys.path.append('/home/dpakhom1/workspace/models/slim/')
+ sys.path.insert(0, 'your/path/vision/')
  ```
 3. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
  
  Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
  
-4. ```VGG 16``` checkpoint file, which you can get from [here](http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz).
-
 5. Clone this library:
 
- ```git clone https://github.com/warmspringwinds/tf-image-segmentation```
+ ```git clone https://github.com/warmspringwinds/dense-ai```
  
  And add it to the path:
  
  ```python
  import sys
  # update with your path
- sys.path.append("/home/dpakhom1/tf_projects/segmentation/tf-image-segmentation/")
+ sys.path.append("/your/path/dense-ai/")
  ```
 
 
@@ -73,7 +68,7 @@ Here you can find models that were described in the paper "Fully Convolutional N
 by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` and ```FCN-8s``` against PASCAL VOC 2012
 dataset.
 
-You can find all the scripts that were used for training and evaluation [here](tf_image_segmentation/recipes/pascal_voc/FCNs).
+You can find all the scripts that were used for training and evaluation [here](dense_ai/recipes/pascal_voc/segmentation).
 
 This code has been used to train networks with this performance:
 
