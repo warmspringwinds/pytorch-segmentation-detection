@@ -1,7 +1,7 @@
-# Dense-ai: Image Segmentation and Object Detection framework
+# Dense-ai: Image Segmentation and Object Detection library
 
-```Dense-ai``` is a framework for dense inference and training on Images.
-The aim of the framework is to provide/provide a simplified way to:
+```Dense-ai``` is a library for dense inference and training of Convolutional Neural Networks (CNNs) on Images.
+The aim of the library is to provide/provide a simplified way to:
 
 - Converting some popular general/medical/other Image Segmentation and Detection Datasets into easy-to-use for training
 format (Pytorch's dataloader).
@@ -13,7 +13,7 @@ this library with reported training routine and not models that were converted f
 - Model definitions (like FCN-32s and others) that use weights initializations from Image Classification models like
 VGG that are officially provided by ```Pytorch/Vision``` library.
 
-So far, the framework contains an implementation of FCN-32s (Long et al.), Resnet-18-8s, Resnet-34-8s (Chen et al.) image segmentation models in ```Pytorch``` and ```Pytorch/Vision``` library with training routine, reported accuracy,
+So far, the library contains an implementation of FCN-32s (Long et al.), Resnet-18-8s, Resnet-34-8s (Chen et al.) image segmentation models in ```Pytorch``` and ```Pytorch/Vision``` library with training routine, reported accuracy,
 trained models for PASCAL VOC 2012 dataset. To train these models on your data, you will have
 to write a ```dataloader``` for your dataset.
 
@@ -63,7 +63,7 @@ the PASCAL VOC 2012 Training data and additional Berkeley segmentation data for 
 It was important to test models on restricted Validation dataset to make sure no images in the
 validation dataset were seen by model during training.
 
-The code to acquire the training and validating the model is also provided in the framework.
+The code to acquire the training and validating the model is also provided in the library.
 
 ### Fully Convolutional Networks for Semantic Segmentation (FCNs)
 
@@ -75,7 +75,7 @@ You can find all the scripts that were used for training and evaluation [here](d
 
 This code has been used to train networks with this performance:
 
-| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 image) | Model Download Link |
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
 | FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       |41 ms.| [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
 | FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.  | in prog.     | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
