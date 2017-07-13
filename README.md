@@ -56,7 +56,7 @@ This code requires:
  ```
 
 
-## PASCAL VOC 2012
+## PASCAL VOC 2012 (Segmentation)
 
 Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset (RV-VOC12) and trained on
 the PASCAL VOC 2012 Training data and additional Berkeley segmentation data for PASCAL VOC 12.
