@@ -2,19 +2,21 @@
 
 The aim of the ```Dense-ai``` framework is to provide/provide a simplified way for:
 
-- Converting some popular general/medical/other Image Segmentation Datasets into easy-to-use for training
+- Converting some popular general/medical/other Image Segmentation and Detection Datasets into easy-to-use for training
 format (Pytorch's dataloader).
 - Training routine with on-the-fly data augmentation (scaling, color distortion).
 - Training routine that is proved to work for particular model/dataset pair.
-- Evaluating Accuracy of trained models with common accuracy measures: Mean IOU, Mean pix. accuracy, Pixel accuracy.
+- Evaluating Accuracy of trained models with common accuracy measures: Mean IOU, Mean pix. accuracy, Pixel accuracy, Mean AP.
 - Model files that were trained on a particular dataset with reported accuracy (models that were trained using
-TF with reported training routine and not models that were converted from Caffe or other framework)
+this library with reported training routine and not models that were converted from Caffe or other framework)
 - Model definitions (like FCN-32s and others) that use weights initializations from Image Classification models like
-VGG that are officially provided by TF-Slim library.
+VGG that are officially provided by ```Pytorch/Vision``` library.
 
-So far, the framework contains an implementation of FCN-32s (Long et al.), Resnet-18-8s, Resnet-34-8s (Chen et al.) models in ```Pytorch``` and ```Pytorch/Vision``` library with training routine, reported accuracy,
+So far, the framework contains an implementation of FCN-32s (Long et al.), Resnet-18-8s, Resnet-34-8s (Chen et al.) image segmentation models in ```Pytorch``` and ```Pytorch/Vision``` library with training routine, reported accuracy,
 trained models for PASCAL VOC 2012 dataset. To train these models on your data, you will have
 to write a ```dataloader``` for your dataset.
+
+Models for Object Detection will be released soon.
 
 
 ## Installation
@@ -23,7 +25,7 @@ This code requires:
 
 1. [Pytorch](https://github.com/pytorch/pytorch).
 
-2. Our [pytorch/vision](https://github.com/pytorch/vision) fork, which might be [merged](https://github.com/pytorch/vision/pull/190) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
+2. Our [pytorch/vision](https://github.com/pytorch/vision) fork, which might be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
 
  Simply run:
  
@@ -74,9 +76,9 @@ This code has been used to train networks with this performance:
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|---------------------|
-| FCN-32s (ours)   | RV-VOC12  | 62.70   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
-| FCN-16s (ours)   | RV-VOC12  | 63.52   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
-| FCN-8s (ours)    | RV-VOC12  | 63.65   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
+| FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
+| FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
+| FCN-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
 | FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
 | FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
