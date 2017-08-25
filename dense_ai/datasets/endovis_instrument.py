@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+import glob
 
 import torch
 import torch.utils.data as data
@@ -10,6 +11,7 @@ import numpy as np
 import imageio
 
 import skimage.io as io
+from PIL import Image
 
 from ..utils.endovis_instrument import clean_up_annotation, merge_left_and_right_annotations
 
@@ -21,6 +23,9 @@ class EndovisInstrument(data.Dataset):
     
     # Urls of original pascal and additional segmentations masks
     URL = 'https://endovissub-instrument.grand-challenge.org/'
+
+    relative_image_save_path = 'Processed/images'
+    relative_annotation_save_path = 'Processed/annotations'
     
     
     def __init__(self,
@@ -38,25 +43,31 @@ class EndovisInstrument(data.Dataset):
             
             self._prepare_dataset()
         
+        saved_images_path = os.path.join(self.root, self.relative_image_save_path)
+        saved_annotations_path = os.path.join(self.root, self.relative_annotation_save_path)
+
+        # We need this for __getitem__
+        self.saved_images_template = os.path.join(saved_images_path, "{0:08d}.jpg")
+        self.saved_annotations_template = os.path.join(saved_annotations_path, "{0:08d}.png")
+
+        # Get the number of all annotations
+        # we apply a regex here to filter annotations out from
+        # anything else
+        saved_annotations = glob.glob( os.path.join(saved_annotations_path, ('[0-9]' * 8) + '.png') )
         
+        self.dataset_size = len(saved_annotations)
         # TODO: Create train/val split later
-        # if train:
-            
-        #     self.img_anno_pairs = pascal_annotation_filename_pairs_train_val[0]
-            
-        # else:
-            
-        #     self.img_anno_pairs = pascal_annotation_filename_pairs_train_val[1]
-            
-            
+        
         
     def __len__(self):
         
-        return len(self.img_anno_pairs)
+        return self.dataset_size
     
     def __getitem__(self, index):
+
+        img_path = self.saved_images_template.format(index)
+        annotation_path = self.saved_annotations_template.format(index) 
         
-        img_path, annotation_path = self.img_anno_pairs[index]
         
         _img = Image.open(img_path).convert('RGB')
         
