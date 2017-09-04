@@ -1,4 +1,3 @@
 [submodule "vision"]
     path = vision
     url = git@github.com:warmspringwinds/vision.git
-    branch = fully_conv_resnet
