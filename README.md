@@ -1,6 +1,6 @@
-# Dense-ai: Image Segmentation and Object Detection 
+# Image Segmentation and Object Detection in Pytorch 
 
-```Dense-ai``` is a library for dense inference and training of Convolutional Neural Networks (CNNs) on Images for Segmentation and Detection.
+```Pytorch-Segmentation-Detection``` is a library for dense inference and training of Convolutional Neural Networks (CNNs) on Images for Segmentation and Detection.
 The aim of the library is to provide/provide a simplified way to:
 
 - Converting some popular general/medical/other Image Segmentation and Detection Datasets into easy-to-use for training
@@ -26,34 +26,26 @@ This code requires:
 
 1. [Pytorch](https://github.com/pytorch/pytorch).
 
-2. Our [pytorch/vision](https://github.com/pytorch/vision) fork, which might be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
-
- Simply run:
- 
- ```git clone -b fully_conv_resnet https://github.com/warmspringwinds/vision```
- 
- And add ```pytorch/vision``` subdirectory to your path:
-
- ```python
- import sys
- # update with your path
- sys.path.insert(0, 'your/path/vision/')
- ```
-3. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
+2. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
  
  Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
  
-5. Clone this library:
+3. Clone the library:
 
- ```git clone https://github.com/warmspringwinds/dense-ai```
+ ```git clone --recursive https://github.com/warmspringwinds/pytorch-segmentation-detection```
  
  And add it to the path:
  
  ```python
  import sys
  # update with your path
- sys.path.append("/your/path/dense-ai/")
+ # All the jupyter notebooks in the repository already have this
+ sys.path.append("/your/path/pytorch-segmentation-detection/")
+ sys.path.insert(0, '/your/path/pytorch-segmentation-detection/vision/')
  ```
+ Here we use our [pytorch/vision](https://github.com/pytorch/vision) fork, which might
+ be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
+ We have added it as a submodule to our repository.
 
 
 ## PASCAL VOC 2012 (Segmentation)
@@ -71,7 +63,7 @@ Here you can find models that were described in the paper "Fully Convolutional N
 by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` (in prog.) and ```FCN-8s``` (in prog.) against PASCAL VOC 2012
 dataset.
 
-You can find all the scripts that were used for training and evaluation [here](dense_ai/recipes/pascal_voc/segmentation).
+You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
 
 This code has been used to train networks with this performance:
 
@@ -92,7 +84,7 @@ Here you can find models that were described in the paper "Fully Convolutional N
 by Long et al. We trained and tested ```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012
 dataset.
 
-You can find all the scripts that were used for training and evaluation [here](dense_ai/recipes/pascal_voc/segmentation).
+You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
 
 This code has been used to train networks with this performance:
 
@@ -110,11 +102,11 @@ This code has been used to train networks with this performance:
 
 We demonstrate applications of our library for a certain tasks which are being ported/ has already been ported to mobile devices:
 
-1. [Sticker creation](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+1. [Sticker creation](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
 
-2. [Iphone's portait effect](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+2. [Iphone's portait effect](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
 
-3. [Background replacement](dense_ai/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+3. [Background replacement](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
 
 4. Surgical Robotic Tools Segmentation (see below)
 
