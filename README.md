@@ -28,13 +28,13 @@ This code requires:
 
 2. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
  
- Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
+    Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
  
 3. Clone the library:
 
  ```git clone --recursive https://github.com/warmspringwinds/pytorch-segmentation-detection```
  
- And add it to the path:
+   And use this code snippet before you start to use the library:
  
  ```python
  import sys
