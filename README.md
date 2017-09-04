@@ -36,16 +36,16 @@ This code requires:
  
    And use this code snippet before you start to use the library:
  
-     ```python
-     import sys
-     # update with your path
-     # All the jupyter notebooks in the repository already have this
-     sys.path.append("/your/path/pytorch-segmentation-detection/")
-     sys.path.insert(0, '/your/path/pytorch-segmentation-detection/vision/')
-     ```
-     Here we use our [pytorch/vision](https://github.com/pytorch/vision) fork, which might
-     be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
-     We have added it as a submodule to our repository.
+   ```python
+   import sys
+   # update with your path
+   # All the jupyter notebooks in the repository already have this
+   sys.path.append("/your/path/pytorch-segmentation-detection/")
+   sys.path.insert(0, '/your/path/pytorch-segmentation-detection/vision/')
+   ```
+   Here we use our [pytorch/vision](https://github.com/pytorch/vision) fork, which might
+   be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
+   We have added it as a submodule to our repository.
 
 4. Download segmentation or detection models that you want to use manually (links can be found below).
 
