@@ -60,7 +60,7 @@ def merge_left_and_right_annotations(left_annotation,
     # A function was written only for the case when tools doesn't intesect which
     # is the case in the first video.
     
-    final_annotation = right_annotation.copy()
+    final_annotation = left_annotation.copy()
 
     # forgot the ambigious class 
     for i in range(1, len(labels)) + [ambigious_class_id]:
