@@ -16,7 +16,7 @@ from PIL import Image
 from ..utils.endovis_instrument import clean_up_annotation, merge_left_and_right_annotations
 
 
-class EndovisInstrument(data.Dataset):
+class Endovis_Instrument_2015(data.Dataset):
 
     
     CLASS_NAMES = ['background', 'manipulator', 'shaft', 'ambigious']
