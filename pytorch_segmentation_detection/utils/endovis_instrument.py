@@ -53,9 +53,13 @@ def clean_up_annotation(annotation, labels=np.asarray([0, 70, 160]), ambigious_c
     return closest_neighbour_map
 
 
+# TODO: recelntly removed 0 from labels, just because there is no place for background
+# class in the labels list. The probelm might arise if the background class is not placed
+# in the beginning of the labels list -- this way it will overwrite all previous unified masks
+
 def merge_left_and_right_annotations(left_annotation,
                                      right_annotation,
-                                     labels=np.asarray([0, 70, 160]),
+                                     labels=np.asarray([70, 160]),
                                      ambigious_class_id=255):
     # A function was written only for the case when tools doesn't intesect which
     # is the case in the first video.
