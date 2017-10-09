@@ -5,6 +5,9 @@ import numpy as np
 import torch.utils.data as data
 import copy
 
+from PIL import Image
+
+
 from ..utils.endovis_instrument import merge_left_and_right_annotations_v2
 
 
@@ -315,8 +318,6 @@ class Endovis_Instrument_2017(data.Dataset):
         annotations_filenames_dict = current_tuple[1]
         image_filename = current_tuple[0]
 
-        image_numpy = io.imread(image_filename)
-
         # Merge left and right instrument parts here
         # This is common for any type of dataset
         annotations_numpy_dict = self.read_annotations_and_merge_left_right_pairs(annotations_filenames_dict)
@@ -338,7 +339,13 @@ class Endovis_Instrument_2017(data.Dataset):
 
                 final_annotation_numpy = self.merge_parts_annotation_numpy_into_binary_tool_annotation(final_annotation_numpy)
         
+        _img = Image.open(image_filename).convert('RGB')
         
-        return image_numpy, final_annotation_numpy
+        _target = Image.fromarray(final_annotation_numpy)
+        
+        if self.joint_transform is not None:
+            _img, _target = self.joint_transform([_img, _target])
+        
+        return _img, _target
     
     
