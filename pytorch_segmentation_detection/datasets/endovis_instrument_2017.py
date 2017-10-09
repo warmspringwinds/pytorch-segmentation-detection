@@ -341,6 +341,11 @@ class Endovis_Instrument_2017(data.Dataset):
         
         _img = Image.open(image_filename).convert('RGB')
         
+        # In case some annotation files has three repeated dims
+        if final_annotation_numpy.ndim == 3:
+            
+            final_annotation_numpy = final_annotation_numpy[:, :, 0]
+        
         _target = Image.fromarray(final_annotation_numpy)
         
         if self.joint_transform is not None:
