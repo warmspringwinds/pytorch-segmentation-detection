@@ -5,6 +5,8 @@ import numpy as np
 import torch.utils.data as data
 import copy
 
+from ..utils.endovis_instrument import merge_left_and_right_annotations_v2
+
 
 def crop_actual_surgical_image(image):
     
@@ -43,12 +45,34 @@ class Endovis_Instrument_2017(data.Dataset):
     
     annotations_dir_name = 'ground_truth'
     
-    instrument_names = ['Needle Driver',
+    
+    parts_class_to_label_mapping =  {
+                                      'Background': 0,
+                                      'Shaft': 10,
+                                      'Wrist': 20,
+                                      'Claspers': 30,
+                                      'Probe': 40 
+                                     }
+    
+    
+    instrument_type_to_label_mapping = {
+                                        'Needle Driver' : 1,
+                                        'Vessel Sealer' : 2,
+                                        'Curved Scissors' : 3,
+                                        'Prograsp Forceps' : 4,
+                                        'Bipolar Forceps' : 5,
+                                        'Grasping Retractor' : 6
+                                        }
+
+    
+    instrument_names = [
+                        'Needle Driver',
                         'Vessel Sealer',
                         'Curved Scissors',
                         'Prograsp Forceps',
                         'Bipolar Forceps',
-                        'Grasping Retractor']
+                        'Grasping Retractor'
+                        ]
 
     # Mapping of instrument name to a folder in the 'groundtruth' subfolder with
     # respective groundtruth files. For each training sequence
@@ -124,11 +148,24 @@ class Endovis_Instrument_2017(data.Dataset):
     
     def __init__(self,
                  root,
+                 dataset_type=0,
                  train=True,
                  joint_transform=None,
                  validation_dataset_number_list=[2]):
         
+        ## Dataset type:
+        # 0 -- binary
+        # 1 -- parts
+        # 2 -- types
+        
+        # Just get the list of class labels for convenience
+        self.parts_class_labels = sorted(self.parts_class_to_label_mapping.values())
+        
+        self.instrument_types_class_labels = sorted(self.instrument_type_to_label_mapping.values())
+        
         self.root = root
+        
+        self.dataset_type = dataset_type
         
         self.joint_transform = joint_transform
         
@@ -151,7 +188,7 @@ class Endovis_Instrument_2017(data.Dataset):
         else:
             
             self.img_annotations_filenames_tuples = self.get_datasets_filenames(validation_dataset_number_list)
-    
+            
     
     def get_single_dataset_filenames(self, dataset_number):
         
@@ -208,5 +245,100 @@ class Endovis_Instrument_2017(data.Dataset):
             all_filenames.extend(current_dataset)
         
         return all_filenames
+    
+    
+    def read_annotations_and_merge_left_right_pairs(self, annotations_dict):
+    
+        annotations_numpy_dict = annotations_dict.copy()
+
+        for instrument_name in annotations_dict:
+
+            current_left_right_filenames_pair = annotations_dict[instrument_name]
+
+            # Read all the annotation images
+            current_left_right_numpy_pair = map(io.imread, current_left_right_filenames_pair)
+
+            # Merge all the annotation labels into one annotation image
+            current_merged_numpy = reduce(lambda x, y: merge_left_and_right_annotations_v2(x, y, self.parts_class_labels[1:]),
+                                          current_left_right_numpy_pair)
+
+            annotations_numpy_dict[instrument_name] = current_merged_numpy
+
+        return annotations_numpy_dict
+    
+    def merge_types_numpy_annotations_dict_into_single_annotation(self, annotations_numpy_dict, labels):
+    
+        annotations_numpy = annotations_numpy_dict.values()
+        
+        annotation_with_merged_types = reduce( lambda x, y: merge_left_and_right_annotations_v2(x, y, labels),
+                                               annotations_numpy )
+
+        return annotation_with_merged_types
+    
+    def merge_parts_annotation_numpy_into_binary_tool_annotation(self, parts_annotation_numpy, label_to_assign=1):
+    
+        parts_annotation_numpy_copy = parts_annotation_numpy.copy()
+
+        parts_annotation_numpy_copy[parts_annotation_numpy_copy > 0] = label_to_assign
+
+        return parts_annotation_numpy_copy
+    
+    def merge_parts_annotations_into_separate_type_annotations(self, annotations_numpy_dict):
+        
+
+        for current_instrument_name in annotations_numpy_dict:
+
+            current_instrument_class_label = self.instrument_type_to_label_mapping[current_instrument_name]
+
+            current_instrument_class_parts_annotation_numpy = annotations_numpy_dict[current_instrument_name]
+
+
+
+            current_instrument_class_binary_annotation_numpy = self.merge_parts_annotation_numpy_into_binary_tool_annotation(current_instrument_class_parts_annotation_numpy,
+                                                                                         label_to_assign=current_instrument_class_label)
+
+
+            annotations_numpy_dict[current_instrument_name] = current_instrument_class_binary_annotation_numpy
+
+
+        return annotations_numpy_dict
+    
+    def __len__(self):
+        
+        return len(self.img_annotations_filenames_tuples)
+    
+    
+    def __getitem__(self, index):
+        
+        current_tuple = self.img_annotations_filenames_tuples[index]
+
+        annotations_filenames_dict = current_tuple[1]
+        image_filename = current_tuple[0]
+
+        image_numpy = io.imread(image_filename)
+
+        # Merge left and right instrument parts here
+        # This is common for any type of dataset
+        annotations_numpy_dict = self.read_annotations_and_merge_left_right_pairs(annotations_filenames_dict)
+
+        if self.dataset_type == 2:
+
+            annotations_numpy_dict = self.merge_parts_annotations_into_separate_type_annotations(annotations_numpy_dict)
+            final_annotation_numpy = self.merge_types_numpy_annotations_dict_into_single_annotation(annotations_numpy_dict,
+                                                                                                   labels=self.instrument_types_class_labels)
+        else:
+
+            # Merge different instrument's types here -- erasing type information and merging parts annotations
+            # Common for binary and parts, if type -- we should omit this operation
+            final_annotation_numpy = self.merge_types_numpy_annotations_dict_into_single_annotation(annotations_numpy_dict,
+                                                                                                   labels=self.parts_class_labels)
+            # Now you need to binarize the parts annotation numpy
+
+            if self.dataset_type == 0:
+
+                final_annotation_numpy = self.merge_parts_annotation_numpy_into_binary_tool_annotation(final_annotation_numpy)
+        
+        
+        return image_numpy, final_annotation_numpy
     
     
