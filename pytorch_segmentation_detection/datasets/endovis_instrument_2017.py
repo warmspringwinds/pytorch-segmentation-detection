@@ -249,6 +249,14 @@ class Endovis_Instrument_2017(data.Dataset):
         
         return all_filenames
     
+    def remove_third_dim_in_annotation_file(self, annotation):
+        
+        # In case some annotation files has three repeated dims
+        if annotation.ndim == 3:
+
+            annotation = annotation[:, :, 0]
+        
+        return annotation
     
     def read_annotations_and_merge_left_right_pairs(self, annotations_dict):
     
@@ -260,7 +268,10 @@ class Endovis_Instrument_2017(data.Dataset):
 
             # Read all the annotation images
             current_left_right_numpy_pair = map(io.imread, current_left_right_filenames_pair)
-
+            
+            # Some annotation files has 2 dims, some 3 dims. Making it consistent here
+            current_left_right_numpy_pair = map(self.remove_third_dim_in_annotation_file, current_left_right_numpy_pair)
+            
             # Merge all the annotation labels into one annotation image
             current_merged_numpy = reduce(lambda x, y: merge_left_and_right_annotations_v2(x, y, self.parts_class_labels[1:]),
                                           current_left_right_numpy_pair)
