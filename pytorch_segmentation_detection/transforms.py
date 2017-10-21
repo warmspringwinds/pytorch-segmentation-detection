@@ -203,3 +203,30 @@ class ResizeAspectRatioPreserve(object):
             oh = self.greater_side_size
             ow = int(self.greater_side_size * w / h)
             return input.resize((ow, oh), self.interpolation)
+        
+
+        
+class Copy(object):
+    
+    
+    def __init__(self, number_of_copies):
+        
+        self.number_of_copies = number_of_copies
+        
+    def __call__(self, input_to_duplicate):
+        
+        
+        # Inputs can be of different types: numpy, torch.Tensor, PIL.Image
+                
+        duplicates_array = []
+        
+        if isinstance(input_to_duplicate, torch.Tensor):
+            
+            for i in xrange(self.number_of_copies):
+                duplicates_array.append(input_to_duplicate.clone())
+        else:
+            
+            for i in xrange(self.number_of_copies):
+                duplicates_array.append(input_to_duplicate.copy())
+            
+        return duplicates_array
