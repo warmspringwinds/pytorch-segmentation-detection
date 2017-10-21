@@ -4,6 +4,8 @@ import collections
 import numpy as np
 from PIL import Image, ImageOps
 
+import torch
+
 
 
 def pad_to_size(input_img, size, fill_label=0):
