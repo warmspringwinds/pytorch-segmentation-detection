@@ -80,7 +80,7 @@ class RandomHorizontalFlipJoint(object):
         # Perform the same flip on all of the inputs
         if random.random() < 0.5:
             
-            return map(lambda single_input:  single_input.transpose(Image.FLIP_LEFT_RIGHT), inputs) 
+            return map(lambda single_input:  ImageOps.mirror(single_input), inputs) 
         
         
         return inputs
