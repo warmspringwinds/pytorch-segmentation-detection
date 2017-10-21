@@ -7,6 +7,60 @@ from PIL import Image, ImageOps
 import torch
 
 
+def split_image_into_tiles(input_image, block_rows, block_cols):
+    """
+    Credit:
+    https://stackoverflow.com/questions/16873441/form-a-big-2d-array-from-multiple-smaller-2d-arrays/16873755#16873755
+    https://stackoverflow.com/questions/13990465/3d-numpy-array-to-2d/13990648#13990648
+    """
+    
+    input_rows, input_cols = input_image.shape[:2]
+        
+    input_depth = input_image.shape[2] if input_image.ndim == 3 else 0
+        
+    # Compute how many blocks will fit along rows and cols axes
+    block_cols_number_in_input = input_cols // block_cols
+    block_rows_number_in_input = input_rows // block_rows
+    
+    overall_number_of_blocks = block_rows_number_in_input * block_cols_number_in_input
+
+    # Reshaping doesn't change c-arrangement of elements.
+    # Reshaping can be looked at like applying ravel() function
+    # and then grouping that 1D array into requested shape.
+    
+    # So if we form our input image in the following shape (below the comment)
+    # we will see that if we swap 1st and 2nd axes (or transpose).
+    # Trasposing in this case can be looked at like as if we index first
+    # along 2nd and then 1st axis. In case of simple 2D matrix transpose -- 
+    # we traverse elemets down first and right second.
+    
+    if input_depth:
+        
+        tmp = input_image.reshape((block_rows_number_in_input,
+                                   block_rows,
+                                   block_cols_number_in_input,
+                                   block_cols,
+                                   input_depth))
+    else:
+        
+        tmp = input_image.reshape((block_rows_number_in_input,
+                                   block_rows,
+                                   block_cols_number_in_input,
+                                   block_cols))
+        
+    tmp = tmp.swapaxes(1, 2)
+    
+    if input_depth:
+        
+        tmp = tmp.reshape(( overall_number_of_blocks, block_rows, block_cols, input_depth ))
+        
+    else:
+        
+        tmp = tmp.reshape(( overall_number_of_blocks, block_rows, block_cols))
+        
+        
+    return tmp
+
 
 def pad_to_size(input_img, size, fill_label=0):
     """Pads image to the size with fill_label if the input image is smaller"""
