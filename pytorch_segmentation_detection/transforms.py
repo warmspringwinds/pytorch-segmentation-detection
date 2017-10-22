@@ -286,3 +286,40 @@ class Copy(object):
                 duplicates_array.append(input_to_duplicate.copy())
             
         return duplicates_array
+    
+
+# Assumed to be run on torch.Tensor
+class Split2D(object):
+    """
+    Splits the Tensor into 2D tiles along given two dimensions,
+    and stacks them along specified new dimension. Mainly used to
+    split input 2D image into nonintersecting tiles and stack them
+    along batch dimension. Can be used when the whole image doesn't fit
+    into the available GPU memory.
+    """
+    
+    
+    def __init__(self,
+                 split_block_sizes=(128, 128),
+                 split_dims=(1, 2),
+                 stack_dim=0):
+        
+        self.split_block_sizes = split_block_sizes
+        self.split_dims = split_dims
+        self.stack_dim = stack_dim
+        
+    def __call__(self, tensor_to_split):
+        
+        split_2d = []
+        
+        split_over_first_dim = tensor_to_split.split(self.split_block_sizes[0],
+                                                     dim=self.split_dims[0])
+
+        for current_first_dim_split in split_over_first_dim:
+
+            split_2d.extend(current_first_dim_split.split(self.split_block_sizes[1],
+                                                          dim=self.split_dims[1]))
+        
+        res = torch.stack(split_2d, dim=self.stack_dim)
+        
+        return res
