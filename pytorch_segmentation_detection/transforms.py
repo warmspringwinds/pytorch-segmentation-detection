@@ -307,7 +307,8 @@ class Split2D(object):
         self.split_block_sizes = split_block_sizes
         self.split_dims = split_dims
         self.stack_dim = stack_dim
-        
+    
+    
     def __call__(self, tensor_to_split):
         
         split_2d = []
@@ -323,3 +324,35 @@ class Split2D(object):
         res = torch.stack(split_2d, dim=self.stack_dim)
         
         return res
+    
+    
+    # Helper functions for reverse() method
+    def squeeze_for_tensor_list(self, list_of_tensors, dim):
+    
+        return map(lambda x: x.squeeze(dim), list_of_tensors)
+
+    
+    def squeeze_for_2D_tensor_list(self, list2D_of_tensors, dim):
+    
+        return map(lambda x: self.squeeze_for_tensor_list(x, dim), list2D_of_tensors)
+    
+    
+    def reverse(self, tensor_to_unsplit, dims_sizes):
+        
+        # First we get separate rows
+        separate_rows = torch.split(tensor_to_unsplit,
+                                    split_size=dims_sizes[1],
+                                    dim=self.stack_dim)
+
+        
+        # Split each rows into separate column elements
+        tensor_list_2D = map(lambda x: torch.split(x, split_size=1, dim=self.stack_dim), separate_rows)
+        
+        # Remove singleton dimension, so that we can use original self.split_dims
+        tensor_list_2D = self.squeeze_for_2D_tensor_list(tensor_list_2D, self.stack_dim)
+
+        concatenated_columns = map(lambda x: torch.cat(x, dim=self.split_dims[1]), tensor_list_2D)
+        
+        unsplit_original_tensor = torch.cat(concatenated_columns, dim=self.split_dims[0])
+        
+        return unsplit_original_tensor
