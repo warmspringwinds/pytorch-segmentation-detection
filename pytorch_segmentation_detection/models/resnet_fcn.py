@@ -5,6 +5,8 @@ import torchvision
 
 class Resnet18_8s(nn.Module):
     
+    # Achieved ~57 on pascal VOC
+    
     def __init__(self, num_classes=2):
         
         super(Resnet18_8s, self).__init__()
