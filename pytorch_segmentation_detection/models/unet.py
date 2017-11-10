@@ -43,7 +43,7 @@ class UnetDownBlock(nn.Module):
 
 
 class UnetUpBlock(nn.Module):
-    """ Downsampling block of Unet.
+    """ Upsampling block of Unet.
     
         The whole architercture of Unet has a one common pattern: a block
         that has two layers of 3x3 convolutions that
