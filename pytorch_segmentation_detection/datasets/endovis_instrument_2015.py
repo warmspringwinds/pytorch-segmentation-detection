@@ -33,11 +33,14 @@ class Endovis_Instrument_2015(data.Dataset):
                  train=True,
                  joint_transform=None,
                  prepare_dataset=False,
+                 dataset_type=0,
                  split_mode=2):
         
         self.root = root
         
         self.joint_transform = joint_transform
+        
+        self.dataset_type = dataset_type
         
         if prepare_dataset:
             
@@ -63,6 +66,16 @@ class Endovis_Instrument_2015(data.Dataset):
         
         return self.dataset_size
     
+    
+    def merge_parts_annotation_numpy_into_binary_tool_annotation(self, parts_annotation_numpy, label_to_assign=1):
+     
+        parts_annotation_numpy_copy = parts_annotation_numpy.copy()
+
+        parts_annotation_numpy_copy[parts_annotation_numpy_copy > 0] = label_to_assign
+
+        return parts_annotation_numpy_copy
+    
+    
     def __getitem__(self, index):
 
         img_path = self.saved_images_template.format(index)
@@ -73,7 +86,14 @@ class Endovis_Instrument_2015(data.Dataset):
         
         # TODO: maybe can be done in a better way
         _target = Image.open(annotation_path)
-
+        
+        if self.dataset_type == 0:
+            
+            target_numpy = np.asarray(_target)
+            target_numpy = self.merge_parts_annotation_numpy_into_binary_tool_annotation(target_numpy)
+            _target = Image.fromarray(target_numpy)
+            
+            
         if self.joint_transform is not None:
             _img, _target = self.joint_transform([_img, _target])
         

@@ -154,7 +154,8 @@ class Endovis_Instrument_2017(data.Dataset):
                  dataset_type=0,
                  train=True,
                  joint_transform=None,
-                 validation_dataset_number_list=[2]):
+                 validation_dataset_number_list=[2],
+                 new_parts_class_to_label_mapping=None):
         
         ## Dataset type:
         # 0 -- binary
@@ -174,6 +175,7 @@ class Endovis_Instrument_2017(data.Dataset):
         
         self.instrument_names_to_groundtruth_folder_mapping = self.get_instrument_names_to_groundtruth_folder_mapping_with_fullpaths()
         
+        self.new_parts_class_to_label_mapping = new_parts_class_to_label_mapping
         # Training datasets are all datasets
         # that are not in validation set
         training_dataset_number_list = []
@@ -297,6 +299,25 @@ class Endovis_Instrument_2017(data.Dataset):
 
         return parts_annotation_numpy_copy
     
+    
+    
+    def change_parts_annotation(self, parts_annotation_numpy):
+        
+        if self.new_parts_class_to_label_mapping is None:
+            
+            return parts_annotation_numpy
+    
+        parts_annotation_numpy_copy = parts_annotation_numpy.copy()
+
+        for tool_part_name, tool_part_old_index in self.parts_class_to_label_mapping.iteritems():
+
+            new_label_to_assign = self.new_parts_class_to_label_mapping[tool_part_name]
+
+            parts_annotation_numpy_copy[parts_annotation_numpy == tool_part_old_index] = new_label_to_assign
+
+        return parts_annotation_numpy_copy
+    
+    
     def merge_parts_annotations_into_separate_type_annotations(self, annotations_numpy_dict):
         
 
@@ -344,8 +365,13 @@ class Endovis_Instrument_2017(data.Dataset):
             # Common for binary and parts, if type -- we should omit this operation
             final_annotation_numpy = self.merge_types_numpy_annotations_dict_into_single_annotation(annotations_numpy_dict,
                                                                                                    labels=self.parts_class_labels)
+            
+            # Check if we need to change the mapping as specified by user
+            if self.dataset_type == 1:
+                
+                final_annotation_numpy = self.change_parts_annotation(final_annotation_numpy)
+                
             # Now you need to binarize the parts annotation numpy
-
             if self.dataset_type == 0:
 
                 final_annotation_numpy = self.merge_parts_annotation_numpy_into_binary_tool_annotation(final_annotation_numpy)
