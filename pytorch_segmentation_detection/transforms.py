@@ -135,7 +135,7 @@ def convert_labels_to_one_hot_encoding(labels, number_of_classes):
     # Filling out the tensor with ones
     one_hot_encoding.scatter_(dim=labels_dims_number, index=labels_, value=1)
     
-    return one_hot_encoding
+    return one_hot_encoding.long()
 
 
 class ComposeJoint(object):
