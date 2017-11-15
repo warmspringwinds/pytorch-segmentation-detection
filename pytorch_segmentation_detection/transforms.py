@@ -94,6 +94,31 @@ def pad_to_size(input_img, size, fill_label=0):
     return processed_img
 
 
+def crop_center_numpy(img, crop_size):
+    
+    crop_width, crop_height = crop_size
+    
+    img_height, img_width = img.shape
+    
+    start_width = img_width//2-(crop_width//2)
+    
+    start_height = img_height//2-(crop_height//2)
+    
+    return img[start_height:start_height+crop_height,start_width:start_width+crop_width]
+
+
+def pad_to_fit_tiles_pil(image, tile_size):
+    
+    original_size_in_pixels = np.asarray(image.size)
+
+    adjusted_size_in_tiles = np.ceil( original_size_in_pixels / float(tile_size) ).astype(np.int)
+
+    adjusted_size_in_pixels = adjusted_size_in_tiles * tile_size
+
+    adjusted_img = pad_to_size(image, adjusted_size_in_pixels)
+    
+    return adjusted_img, adjusted_size_in_pixels, adjusted_size_in_tiles
+
 class ComposeJoint(object):
     
     def __init__(self, transforms):
