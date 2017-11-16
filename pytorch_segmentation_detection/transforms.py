@@ -130,7 +130,7 @@ def convert_labels_to_one_hot_encoding(labels, number_of_classes):
     # We add one more dim to the end of tensor with the size of 'number_of_classes'
     one_hot_shape = list(labels.size())
     one_hot_shape.append(number_of_classes)
-    one_hot_encoding = torch.zeros(one_hot_shape)
+    one_hot_encoding = torch.zeros(one_hot_shape).type(labels.type())
     
     # Filling out the tensor with ones
     one_hot_encoding.scatter_(dim=labels_dims_number, index=labels_, value=1)

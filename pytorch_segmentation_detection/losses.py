@@ -19,6 +19,8 @@ class FocalLoss(nn.Module):
 
     def forward(self, flatten_logits, flatten_targets):
         
+        flatten_targets = flatten_targets.data
+        
         number_of_classes = flatten_logits.size(1)
         
         flatten_targets_one_hot = convert_labels_to_one_hot_encoding(flatten_targets, number_of_classes)
