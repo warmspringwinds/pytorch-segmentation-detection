@@ -348,6 +348,8 @@ class Resnet50_8s(nn.Module):
 
 class Resnet9_8s(nn.Module):
     
+    # Gets ~ 46 MIOU on Pascal Voc
+    
     def __init__(self, num_classes=1000):
         
         super(Resnet9_8s, self).__init__()
