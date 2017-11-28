@@ -99,6 +99,27 @@ This code has been used to train networks with this performance:
 | Resnet-101-8s (ours)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
 
 
+## Endovis 2017 (Segmentation)
+
+Implemented models were trained on Endovis 2017 segmentation dataset and the sequence number
+3 was used for validation and was not included in training dataset. 
+
+The code to acquire the training and validating the model is also provided in the library.
+
+### Binary Segmentation
+
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-18-8s   | RV-VOC12  | 96.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/4lemtiaacrytatu/resnet_18_8s_best.pth?dl=0)            |
+| Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog.            |
+
+### Multi-class Segmentation
+
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-18-8s   | RV-VOC12  | 81.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/p9ey655mmzb3v5l/resnet_18_8s_multiclass_best.pth?dl=0)            |
+| Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog            |
+
 ## Applications
 
 We demonstrate applications of our library for a certain tasks which are being ported/ has already been ported to mobile devices:
