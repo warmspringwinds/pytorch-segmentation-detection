@@ -305,7 +305,44 @@ class Resnet50_32s(nn.Module):
         x = nn.functional.upsample_bilinear(input=x, size=input_spatial_dim)
         
         return x
+
     
+class Resnet50_16s(nn.Module):
+    
+    
+    def __init__(self, num_classes=1000):
+        
+        super(Resnet50_16s, self).__init__()
+        
+        # Load the pretrained weights, remove avg pool
+        # layer and get the output stride of 16
+        resnet50_8s = models.resnet50(fully_conv=True,
+                                       pretrained=True,
+                                       output_stride=16,
+                                       remove_avg_pool_layer=True)
+        
+        # Randomly initialize the 1x1 Conv scoring layer
+        resnet50_8s.fc = nn.Conv2d(resnet50_8s.inplanes, num_classes, 1)
+        
+        self.resnet50_8s = resnet50_8s
+        
+        self._normal_initialization(self.resnet50_8s.fc)
+        
+        
+    def _normal_initialization(self, layer):
+        
+        layer.weight.data.normal_(0, 0.01)
+        layer.bias.data.zero_()
+        
+    def forward(self, x):
+        
+        input_spatial_dim = x.size()[2:]
+        
+        x = self.resnet50_8s(x)
+        
+        x = nn.functional.upsample_bilinear(input=x, size=input_spatial_dim)
+        
+        return x
 
 class Resnet50_8s(nn.Module):
     
