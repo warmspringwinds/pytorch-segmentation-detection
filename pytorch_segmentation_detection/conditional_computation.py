@@ -134,7 +134,7 @@ def gumbel_softmax(logits, dim=None, hard=False, tau=1):
     dim = logits.size(-1) if dim is None else dim
     
     samples_soft = gumbel_softmax_sample(logits, tau=tau, dim=dim)
-    
+        
     if hard:
         
         _, max_value_indexes = samples_soft.data.max(dim, keepdim=True)
