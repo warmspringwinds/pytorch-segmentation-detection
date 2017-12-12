@@ -34,6 +34,9 @@ class RunningConfusionMatrix():
             An array with predictions
         """
         
+        # Mask-out value is ignored by default in the sklearn
+        # read sources to see how that was handled
+        
         current_confusion_matrix = confusion_matrix(y_true=ground_truth,
                                                     y_pred=prediction,
                                                     labels=self.labels)
