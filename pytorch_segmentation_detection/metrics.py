@@ -22,6 +22,17 @@ class RunningConfusionMatrix():
         self.overall_confusion_matrix = None
         
     def update_matrix(ground_truth, prediction):
+        """Updates overall confusion matrix statistics.
+        If you are working with 2D data, just .flatten() it before running this
+        function.
+
+        Parameters
+        ----------
+        groundtruth : array, shape = [n_samples]
+            An array with groundtruth values
+        prediction : array, shape = [n_samples]
+            An array with predictions
+        """
         
         current_confusion_matrix = confusion_matrix(y_true=ground_truth,
                                                     y_pred=prediction,
