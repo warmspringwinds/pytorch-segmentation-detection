@@ -21,7 +21,7 @@ class RunningConfusionMatrix():
         self.labels = labels
         self.overall_confusion_matrix = None
         
-    def update_matrix(ground_truth, prediction):
+    def update_matrix(self, ground_truth, prediction):
         """Updates overall confusion matrix statistics.
         If you are working with 2D data, just .flatten() it before running this
         function.
@@ -41,7 +41,7 @@ class RunningConfusionMatrix():
                                                     y_pred=prediction,
                                                     labels=self.labels)
         
-        if self.overall_confusion_matrix:
+        if self.overall_confusion_matrix is not None:
             
             self.overall_confusion_matrix += current_confusion_matrix
         else:
