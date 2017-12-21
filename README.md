@@ -92,11 +92,10 @@ This code has been used to train networks with this performance:
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
 | Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            |
-| Resnet-34-8s (ours)   | RV-VOC12  | 66.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/tifnzxhwxvdodg6/resnet_34_8s_66.pth?dl=0)            |
+| Resnet-34-8s (ours)   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            |
+| Resnet-50-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
 | Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| Resnet-18-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
-| Resnet-34-8s (ours)  | RV-VOC11  | n/a   | n/a              | n/a         | n/a |                     |
-| Resnet-101-8s (ours)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
+| Resnet-101-16s (orig)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
 
 
 ## Endovis 2017 (Segmentation)
