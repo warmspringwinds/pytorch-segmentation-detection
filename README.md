@@ -58,6 +58,31 @@ validation dataset were seen by model during training.
 
 The code to acquire the training and validating the model is also provided in the library.
 
+
+### DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs
+
+
+Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
+by Long et al. We trained and tested ```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012
+dataset.
+
+You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
+
+Qualitative results:
+
+![Alt text](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/segmentation_demo_preview.gif?raw=true "Title")
+
+This code has been used to train networks with this performance:
+
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            |
+| Resnet-34-8s (ours)   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            |
+| Resnet-50-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
+| Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
+| Resnet-101-16s (orig)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
+
+
 ### Fully Convolutional Networks for Semantic Segmentation (FCNs)
 
 Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
@@ -78,24 +103,6 @@ This code has been used to train networks with this performance:
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30         | in prog. |                     |
 
 
-### DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs
-
-
-Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
-by Long et al. We trained and tested ```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012
-dataset.
-
-You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
-
-This code has been used to train networks with this performance:
-
-| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
-|------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            |
-| Resnet-34-8s (ours)   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            |
-| Resnet-50-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| Resnet-101-16s (orig)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
 
 
 ## Endovis 2017 (Segmentation)
