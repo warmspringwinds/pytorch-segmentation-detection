@@ -103,9 +103,6 @@ This code has been used to train networks with this performance:
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30         | in prog. |                     |
 
 
->>>>>>> c1f6c5551ac06e13d1f5e5e41352fe1f7c116956
-
-
 ## Endovis 2017 (Segmentation)
 
 Implemented models were trained on Endovis 2017 segmentation dataset and the sequence number
