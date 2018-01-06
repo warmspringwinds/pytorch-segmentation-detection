@@ -120,7 +120,7 @@ The code to acquire the training and validating the model is also provided in th
 
 Qualitative results:
 
-![Alt text](pytorch_segmentation_detection/recipes/endovis/segmentation/validation_binary.gif?raw=true "Title")
+![Alt text](pytorch_segmentation_detection/recipes/endovis_2017/segmentation/validation_binary.gif?raw=true "Title")
 
 ### Multi-class Segmentation
 
@@ -131,7 +131,7 @@ Qualitative results:
 
 Qualitative results:
 
-![Alt text](pytorch_segmentation_detection/recipes/endovis/segmentation/validation_multiclass.gif?raw=true "Title")
+![Alt text](pytorch_segmentation_detection/recipes/endovis_2017/segmentation/validation_multiclass.gif?raw=true "Title")
 
 ## Applications
 
