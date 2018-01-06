@@ -95,7 +95,7 @@ This code has been used to train networks with this performance:
 | Resnet-34-8s (ours)   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            |
 | Resnet-50-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
 | Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| Resnet-101-16s (orig)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
+| Resnet-101-16s (orig)  | RV-VOC11  | 68.39   | n/a              | n/a         | 180 ms. |                     |
 
 
 ## Endovis 2017 (Segmentation)
