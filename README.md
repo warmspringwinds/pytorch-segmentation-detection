@@ -117,12 +117,21 @@ The code to acquire the training and validating the model is also provided in th
 | Resnet-18-8s   | RV-VOC12  | 96.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/4lemtiaacrytatu/resnet_18_8s_best.pth?dl=0)            |
 | Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog.            |
 
+
+Qualitative results:
+
+![Alt text](pytorch_segmentation_detection/recipes/endovis/segmentation/validation_binary.gif?raw=true "Title")
+
 ### Multi-class Segmentation
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
 | Resnet-18-8s   | RV-VOC12  | 81.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/p9ey655mmzb3v5l/resnet_18_8s_multiclass_best.pth?dl=0)            |
 | Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog            |
+
+Qualitative results:
+
+![Alt text](pytorch_segmentation_detection/recipes/endovis/segmentation/validation_multiclass.gif?raw=true "Title")
 
 ## Applications
 
