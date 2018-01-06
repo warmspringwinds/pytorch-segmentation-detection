@@ -118,7 +118,7 @@ The code to acquire the training and validating the model is also provided in th
 | Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog.            |
 
 
-Qualitative results:
+Qualitative results (on validation sequence):
 
 ![Alt text](pytorch_segmentation_detection/recipes/endovis_2017/segmentation/validation_binary.gif?raw=true "Title")
 
@@ -129,7 +129,7 @@ Qualitative results:
 | Resnet-18-8s   | RV-VOC12  | 81.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/p9ey655mmzb3v5l/resnet_18_8s_multiclass_best.pth?dl=0)            |
 | Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog            |
 
-Qualitative results:
+Qualitative results (on validation sequence):
 
 ![Alt text](pytorch_segmentation_detection/recipes/endovis_2017/segmentation/validation_multiclass.gif?raw=true "Title")
 
