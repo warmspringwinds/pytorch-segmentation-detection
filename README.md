@@ -110,6 +110,8 @@ Implemented models were trained on Endovis 2017 segmentation dataset and the seq
 
 The code to acquire the training and validating the model is also provided in the library.
 
+Additional Qualitative results can be found on [this youtube playlist](https://www.youtube.com/watch?v=DJZxOuT5GY0&list=PLJkMX36nfYD3MpJozA3kdJKQpTVishk5_).
+
 ### Binary Segmentation
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
