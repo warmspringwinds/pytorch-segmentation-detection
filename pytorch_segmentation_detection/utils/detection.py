@@ -1,7 +1,84 @@
 import torch
 
+# Abbreviations:
 
-def convert_bbox_xywh_tensor_to_xyxy(bbox_xywh_tensor):
+# center xywh -- center x/y coordinates or a rectangle with width and height
+# Used everywhere during training because the method computes errors based on the
+# difference of center coordinates of the groundtruth boxes and bounding boxes.
+
+# topleft xywh -- top left coordinates of a bounding box and its width and height.
+# This format is used in the coco-like annotations for pascal voc. Also used
+# for easier visualization.
+
+# xyxy -- topleft x/y coordinates and bottom right x/y coordinates of a rectangle.
+# This format is used for computation of intersection over union metric.
+
+# Short desciption of the methods:
+
+# -- convert_bbox_topleft_xywh_tensor_to_center_xywh() is used to convert records
+# that we recieve from coco-like dataloader to our canonical xy center representation
+# that is required for training of our model
+
+# -- convert_bbox_center_xywh_tensor_to_xyxy() is used to convert our bounding boxes
+# in canonical center xywh representation to xyxy one in order to easily compute
+# intersection over using using compute_bboxes_ious() function
+
+
+def convert_bbox_topleft_xywh_tensor_to_center_xywh(bbox_topleft_xywh_tensor):
+    """Function to convert bounding boxes in format (x_topleft, y_topleft, width, height)
+    to a format of (x_center, y_center, width, height).
+    
+    Works with a tensors of a (N, 4) shape.
+    
+    Parameters
+    ----------
+    bbox_xywh_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in topleft_xywh format
+        
+    Returns
+    -------
+    bbox_xyxy_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in center_xywh format
+    """
+    
+    bbox_center_xywh_tensor = bbox_topleft_xywh_tensor.clone()
+    
+    bbox_center_xywh_tensor[:, 0] = bbox_topleft_xywh_tensor[:, 0] + bbox_topleft_xywh_tensor[:, 2] * 0.5
+    bbox_center_xywh_tensor[:, 1] = bbox_topleft_xywh_tensor[:, 1] + bbox_topleft_xywh_tensor[:, 3] * 0.5
+    
+    return bbox_center_xywh_tensor
+
+def convert_bbox_center_xywh_tensor_to_xyxy(bbox_center_xywh_tensor):
+    """Function to convert bounding boxes in format (x_center, y_center, width, height)
+    to a format of (x_min, y_min, x_max, y_max).
+    
+    Works with a tensors of a (N, 4) shape.
+    
+    Parameters
+    ----------
+    bbox_xywh_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in center_xywh format
+        
+    Returns
+    -------
+    bbox_xyxy_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in xyxy format
+    """
+    
+    bbox_xyxy_tensor = bbox_center_xywh_tensor.clone()
+    
+    # Getting top left corner
+    bbox_xyxy_tensor[:, 0] = bbox_center_xywh_tensor[:, 0] - bbox_center_xywh_tensor[:, 2] * 0.5
+    bbox_xyxy_tensor[:, 1] = bbox_center_xywh_tensor[:, 1] - bbox_center_xywh_tensor[:, 3] * 0.5
+    
+    # Getting bottom right corner
+    bbox_xyxy_tensor[:, 2] = bbox_center_xywh_tensor[:, 0] + bbox_center_xywh_tensor[:, 2] * 0.5
+    bbox_xyxy_tensor[:, 3] = bbox_center_xywh_tensor[:, 1] + bbox_center_xywh_tensor[:, 3] * 0.5
+    
+    return bbox_xyxy_tensor
+
+
+def convert_bbox_topleft_xywh_tensor_to_xyxy(bbox_topleft_xywh_tensor):
     """Function to convert bounding boxes in format (x_topleft, y_topleft, width, height)
     to a format of (x_min, y_min, x_max, y_max).
     
@@ -18,10 +95,10 @@ def convert_bbox_xywh_tensor_to_xyxy(bbox_xywh_tensor):
         Tensor with bounding boxes in xyxy format
     """
     
-    bbox_xyxy_tensor = bbox_xywh_tensor.clone()
+    bbox_xyxy_tensor = bbox_topleft_xywh_tensor.clone()
     
-    bbox_xyxy_tensor[:, 2] = bbox_xyxy_tensor[:, 0] + bbox_xyxy_tensor[:, 2]
-    bbox_xyxy_tensor[:, 3] = bbox_xyxy_tensor[:, 1] + bbox_xyxy_tensor[:, 3]
+    bbox_xyxy_tensor[:, 2] = bbox_topleft_xywh_tensor[:, 0] + bbox_topleft_xywh_tensor[:, 2]
+    bbox_xyxy_tensor[:, 3] = bbox_topleft_xywh_tensor[:, 1] + bbox_topleft_xywh_tensor[:, 3]
     
     return bbox_xyxy_tensor
 
