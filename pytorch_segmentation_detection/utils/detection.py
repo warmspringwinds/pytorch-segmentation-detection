@@ -1,5 +1,8 @@
 import torch
 
+from matplotlib import pyplot as plt
+import matplotlib.patches as patches
+
 # Abbreviations:
 
 # center xywh -- center x/y coordinates or a rectangle with width and height
@@ -102,6 +105,64 @@ def convert_bbox_topleft_xywh_tensor_to_xyxy(bbox_topleft_xywh_tensor):
     
     return bbox_xyxy_tensor
 
+
+def convert_bbox_center_xywh_tensor_to_topleft_xywh(bbox_center_xywh_tensor):
+    """Function to convert bounding boxes in format (x_center, y_center, width, height)
+    to a format of (x_topleft, y_topleft, width, height).
+    
+    Works with a tensors of a (N, 4) shape.
+    
+    Parameters
+    ----------
+    bbox_center_xywh_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in center_xywh format
+        
+    Returns
+    -------
+    bbox_topleft_xywh_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in topleft_xywh format
+    """
+    
+    bbox_topleft_xywh_tensor = bbox_center_xywh_tensor.clone()
+    
+    bbox_topleft_xywh_tensor[:, 0] = bbox_center_xywh_tensor[:, 0] - bbox_center_xywh_tensor[:, 2] * 0.5
+    bbox_topleft_xywh_tensor[:, 1] = bbox_center_xywh_tensor[:, 1] - bbox_center_xywh_tensor[:, 3] * 0.5
+    
+    return bbox_topleft_xywh_tensor
+
+
+def display_bboxes_center_xywh(img, bboxes_center_xywh):
+    """Function for displaying bounding boxes on the given image.
+    
+    Displays the bounding boxes in the format of center_xywh on the given image.
+    
+    Parameters
+    ----------
+    bboxes_center_xywh : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in center_xywh format
+    """
+    
+    # Create figure and axes
+    fig, ax = plt.subplots(1, figsize=(9, 6.9))
+    
+    # Display the image
+    ax.imshow(img)
+    
+    bboxes_topleft_xywh = convert_bbox_center_xywh_tensor_to_topleft_xywh(bboxes_center_xywh)
+        
+    for bbox_topleft_xywh in bboxes_topleft_xywh:
+    
+        # Create a Rectangle patch
+        rect = patches.Rectangle(bbox_topleft_xywh[:2],
+                                 bbox_topleft_xywh[2],
+                                 bbox_topleft_xywh[3],
+                                 linewidth=2,
+                                 edgecolor='b',
+                                 facecolor='none')
+        # Add the patch to the Axes
+        ax.add_patch(rect)
+    
+    plt.show()
 
 def compute_bboxes_ious(bboxes_xyxy_group_1, bboxes_xyxy_group_2):
     """Function to compute the intersection over union (IOU) metric
