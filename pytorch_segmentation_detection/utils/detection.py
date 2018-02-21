@@ -3,6 +3,35 @@ import torch
 from matplotlib import pyplot as plt
 import matplotlib.patches as patches
 
+
+def compute_network_output_feature_map_size(input_img_size, stride):
+    """Function to compute the size of the output feature map of the network.
+    
+    Given an image size and stride of a network, computes the output feature map size.
+    Basically just coputes input_img_size / stride values.
+    
+    Parameters
+    ----------
+    input_img_size : tuple of ints
+        Tuple with height and width sizes of the image
+    
+    stride : int
+        Output stride of the network
+        
+    Returns
+    -------
+    feature_map_size : tuple of ints
+        Size of the output feature map.
+    """
+    
+    
+    input_size = np.asarray(input_img_size).astype(np.float)
+
+    feature_map_size = input_size / stride
+    
+    return np.floor(feature_map_size).astype(np.int)
+
+
 # Abbreviations:
 
 # center xywh -- center x/y coordinates or a rectangle with width and height
