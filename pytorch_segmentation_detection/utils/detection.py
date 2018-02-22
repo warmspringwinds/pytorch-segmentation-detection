@@ -201,7 +201,7 @@ class AnchorBoxesManager():
         
         feature_map_height, feature_map_width = compute_network_output_feature_map_size(input_size, stride=self.stride)
 
-        meshgrid_height, meshgrid_width = np.meshgrid(range(feature_map_height), range(feature_map_width))
+        meshgrid_width, meshgrid_height = np.meshgrid(range(feature_map_width), range(feature_map_height))
 
         # Getting coordinates of centers of all the grid cells of the feature map
         anchor_coordinates_feature_map = zip(meshgrid_height.flatten(), meshgrid_width.flatten())
@@ -344,7 +344,7 @@ def compute_network_output_feature_map_size(input_img_size, stride):
 
     feature_map_size = input_size / stride
     
-    return np.floor(feature_map_size).astype(np.int)
+    return np.ceil(feature_map_size).astype(np.int)
 
 
 # Abbreviations:
