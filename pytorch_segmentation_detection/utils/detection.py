@@ -136,6 +136,11 @@ class AnchorBoxesManager():
         self.aspect_ratios = aspect_ratios
         self.stride = stride
         
+        self.feature_map_height, self.feature_map_width = compute_network_output_feature_map_size(input_image_size,
+                                                                                                  stride=stride)
+        
+        self.number_of_anchors_per_cell = len(anchor_areas) * len(aspect_ratios)
+        
         # Precomputing anchor boxes positions
         
         self.precompute_anchor_boxes(input_image_size)
@@ -317,7 +322,26 @@ class AnchorBoxesManager():
 
         target_labels[ignore] = -1
         
-        return target_deltas, target_labels
+        # Resizing so that it's easier to use with some models
+        # TODO: the following piece of code can be probably
+        # placed in a separate function.
+        
+        original_shape = [self.feature_map_height,
+                          self.feature_map_width,
+                          self.number_of_anchors_per_cell]
+        
+        target_labels_reshaped_back = target_labels.view(original_shape)
+        
+        # Tensor with coordinates has additional dim with 4 elements: x, y, height, width
+        original_shape.append(4)
+        
+        target_deltas_reshaped_back = target_deltas.view(original_shape)
+        
+        target_deltas_reshaped_back = target_deltas_reshaped_back.permute(2, 3, 0, 1).contiguous()
+        
+        target_labels_reshaped_back = target_labels_reshaped_back.permute(2, 0, 1).contiguous()
+        
+        return target_deltas_reshaped_back, target_labels_reshaped_back
 
 def compute_network_output_feature_map_size(input_img_size, stride):
     """Function to compute the size of the output feature map of the network.
