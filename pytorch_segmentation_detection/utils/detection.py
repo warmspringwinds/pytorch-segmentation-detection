@@ -5,6 +5,72 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.patches as patches
 
+from PIL import Image, ImageOps
+
+
+def pad_to_size_with_bounding_boxes(input_img, size, bboxes_center_xywh, fill_label=0):
+    """A function that pads image to the size with fill_label if the input image is smaller
+    and updates the coordinates of bounding boxes in a format of center_xywh that were defined
+    on the original image.
+        
+    Parameters
+    ----------
+    input_img : PIL image
+        Tuple with height and width sizes of the image
+
+    size : tuple of ints
+        Tuple of ints representing width and height of a desired padded image
+
+    bboxes_center_xywh: torch.FloatTensor of size (N, 4)
+        Tensor containing bounding boxes defined in center_xywh format
+
+    fill_label : int
+        A value used to fill image in the padded areas.
+        
+    Returns
+    -------
+    processed_img: PIL image
+        Image that was padded to the desired size
+        
+    bboxes_center_xywhh_padded : torch.FloatTensor
+        Tensor that contains updated with respect to performed padding
+        coordinates of bounding boxes in a center_xywh format.
+    """
+    
+    input_size = np.asarray(input_img.size)
+    padded_size = np.asarray(size)
+
+    difference = padded_size - input_size
+
+    parts_to_expand = difference > 0
+
+    expand_difference = difference * parts_to_expand
+
+    expand_difference_top_and_left = expand_difference // 2
+
+    expand_difference_bottom_and_right = expand_difference - expand_difference_top_and_left
+    
+    # Form the PIL config vector
+    pil_expand_array = np.concatenate( (expand_difference_top_and_left,
+                                        expand_difference_bottom_and_right) )
+    
+    processed_img = input_img
+    
+    # Check if we actually need to expand our image.
+    if pil_expand_array.any():
+        
+        pil_expand_tuple = tuple(pil_expand_array)
+        
+        processed_img = ImageOps.expand(input_img, border=pil_expand_tuple, fill=fill_label)
+    
+    
+    bboxes_center_xywhh_padded = bboxes_center_xywh.clone()
+    bboxes_center_xywhh_padded[:, 0] = bboxes_center_xywh[:, 0] + expand_difference_top_and_left[0]
+    bboxes_center_xywhh_padded[:, 1] = bboxes_center_xywh[:, 1] + expand_difference_top_and_left[1]
+    
+    
+    return processed_img, bboxes_center_xywhh_padded
+
 
 class AnchorBoxesManager():
     """
