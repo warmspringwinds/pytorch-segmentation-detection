@@ -64,6 +64,11 @@ def pad_to_size_with_bounding_boxes(input_img, size, bboxes_center_xywh, fill_la
         processed_img = ImageOps.expand(input_img, border=pil_expand_tuple, fill=fill_label)
     
     
+    # TODO: obviously there is something wrong with the name of the top_and_left
+    # variables as they are not representing top and left difference -- top and left
+    # should be probably swapped -- needs more inspecting. The function was checked to 
+    # work correctly though.
+    
     bboxes_center_xywhh_padded = bboxes_center_xywh.clone()
     bboxes_center_xywhh_padded[:, 0] = bboxes_center_xywh[:, 0] + expand_difference_top_and_left[0]
     bboxes_center_xywhh_padded[:, 1] = bboxes_center_xywh[:, 1] + expand_difference_top_and_left[1]
