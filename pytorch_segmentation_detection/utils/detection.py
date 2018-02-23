@@ -311,7 +311,10 @@ class AnchorBoxesManager():
         target_deltas = torch.cat((delta_xy, delta_wh), dim=1)
 
         # Accounting for the background here
-        target_labels = ground_truth_labels[anchor_boxes_best_groundtruth_match_ids] + 1
+        # TODO: add special handeling of +1 shifting classes -- we dont' need that 
+        # for pascal as all classes ids don't have 0 there but there might be other
+        # datasets where it is not the case
+        target_labels = ground_truth_labels[anchor_boxes_best_groundtruth_match_ids] #+ 1
         
         # TODO: during testing the threshold of 0.5 seemed to be too strict,
         # some groundtruth boxes didn't have any matched anchor boxes
