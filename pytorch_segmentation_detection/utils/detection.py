@@ -6,6 +6,74 @@ from matplotlib import pyplot as plt
 import matplotlib.patches as patches
 
 from PIL import Image, ImageOps
+from torch.autograd import Variable
+
+
+
+
+def box_nms(bboxes, scores, threshold=0.5, mode='union'):
+    """Function that performes non-maximum suppression of predicted
+    bounding boxes by prunning predictions that significantly overlap.
+
+    Credit:
+    https://github.com/kuangliu/pytorch-retinanet
+
+    Reference:
+    https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/nms/py_cpu_nms.py
+
+    Parameters
+    ----------
+    bboxes : torch.FloatTensor of size (#boxes, 4)
+     Tensor containing bounding boxes in a xyxy format
+
+    scores:  torch.FloatTensor of size (#boxes,)
+     Tensor containing confidence scores for each of the bounding
+     boxes (probabilities).
+
+    Returns
+    -------
+    boxes : torch.LongTensor of size (#selected_boxes,)
+     Indexes of boxes that were not prunned
+    """
+        
+    x1 = bboxes[:,0]
+    y1 = bboxes[:,1]
+    x2 = bboxes[:,2]
+    y2 = bboxes[:,3]
+
+    areas = (x2-x1) * (y2-y1)
+    _, order = scores.sort(0, descending=True)
+
+    keep = []
+    while order.numel() > 0:
+        i = order[0]
+        keep.append(i)
+
+        if order.numel() == 1:
+            break
+
+        xx1 = x1[order[1:]].clamp(min=x1[i])
+        yy1 = y1[order[1:]].clamp(min=y1[i])
+        xx2 = x2[order[1:]].clamp(max=x2[i])
+        yy2 = y2[order[1:]].clamp(max=y2[i])
+
+        w = (xx2-xx1).clamp(min=0)
+        h = (yy2-yy1).clamp(min=0)
+        inter = w*h
+
+        if mode == 'union':
+            ovr = inter / (areas[i] + areas[order[1:]] - inter)
+        elif mode == 'min':
+            ovr = inter / areas[order[1:]].clamp(max=areas[i])
+        else:
+            raise TypeError('Unknown nms mode: %s.' % mode)
+
+        ids = (ovr<=threshold).nonzero().squeeze()
+        if ids.numel() == 0:
+            break
+        order = order[ids+1]
+
+    return torch.LongTensor(keep)
 
 
 def pad_to_size_with_bounding_boxes(input_img, size, bboxes_center_xywh, fill_label=0):
@@ -348,7 +416,68 @@ class AnchorBoxesManager():
         target_labels_reshaped_back = target_labels_reshaped_back.permute(2, 0, 1).contiguous()
         
         return target_deltas_reshaped_back, target_labels_reshaped_back
+    
+    def decode(self, anchors_deltas, anchors_logits):
+        """Function that converts the predicted delta values for anchor boxes
+        into final prediction bounding boxes with associated classes.
 
+        Parameters
+        ----------
+        anchors_deltas : torch.FloatTensor of size (H*W*ANCHOR_BOXES_PER_CELL, 4)
+            Tensor containing delta values for each anchor predicted by some model.
+            Make sure that values are aligned in the same way (H, W, anchor_boxes_per_cell, 4)
+
+        anchors_logits:  torch.LongTensor of size (H*W*ANCHOR_BOXES_PER_CELL, NUMBER_OF_CLASSES)
+            Tensor containing logits predicted for each anchor box by the model.
+            Make sure that the input values are properly aligned similar to previous argument.
+
+        Returns
+        -------
+        boxes : torch.FloatTensor of size (#boxes, 4)
+            Returns predicted boxes in the center_xywh format.
+
+        classes : torch.LongTensor of size (#boxes,)
+            Returns predicted classes for each of the returned boxes
+        """
+
+
+        anchor_boxes = self.anchor_boxes.type_as(anchors_deltas)
+
+        # (H*W*anchors_per_cell, number_of_classes)
+        # Variable() because softmax work only with them and not Tensors
+        anchors_probabilities = torch.nn.functional.softmax(Variable(anchors_logits), dim=1).data
+
+        anchors_probabilities_argmaxed_score, anchors_probabilities_argmaxed_class = anchors_probabilities.max(1)
+
+        # anchor boxes that were classified as a non-background -- meaning that
+        # they have an intersection of at least 0.5 IOU with 
+        active_anchor_boxes_indexes = torch.nonzero(anchors_probabilities_argmaxed_class > 0).squeeze()
+
+        loc_xy = anchors_deltas[:,:2]
+        loc_wh = anchors_deltas[:,2:]
+
+        xy = loc_xy * anchor_boxes[:,2:] + anchor_boxes[:,:2]
+        wh = loc_wh.exp() * anchor_boxes[:,2:]
+
+        boxes_center_xywh = torch.cat([xy, wh], 1)
+
+        # Convert to xyxy to perform non maximum suppression
+        boxes_xyxy = torch.cat([xy-wh/2, xy+wh/2], 1)
+
+        # Getting the coordinates of only active anchor boxes
+        active_boxes_center_xywh = boxes_center_xywh[active_anchor_boxes_indexes, :]
+        activated_anchor_boxes_xyxy = boxes_xyxy[active_anchor_boxes_indexes, :]
+        activated_anchor_scores = anchors_probabilities_argmaxed_score[active_anchor_boxes_indexes]
+        activated_anchor_classes = anchors_probabilities_argmaxed_class[active_anchor_boxes_indexes]
+
+        suppressed_indexes = box_nms(activated_anchor_boxes_xyxy, activated_anchor_scores).type_as(anchors_probabilities_argmaxed_class)
+
+        final_boxes_center_xywh = active_boxes_center_xywh[suppressed_indexes]
+        final_boxes_classes = activated_anchor_classes[suppressed_indexes]
+
+        return final_boxes_center_xywh, final_boxes_classes
+
+    
 def compute_network_output_feature_map_size(input_img_size, stride):
     """Function to compute the size of the output feature map of the network.
     
