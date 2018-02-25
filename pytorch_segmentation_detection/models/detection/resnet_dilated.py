@@ -37,3 +37,39 @@ class Resnet18_16s(nn.Module):
         x = self.resnet18_16s(x)
         
         return x
+
+    
+class Resnet34_16s(nn.Module):
+    
+    
+    def __init__(self, num_classes=1000):
+        
+        super(Resnet34_16s, self).__init__()
+        
+        # Load the pretrained weights, remove avg pool
+        # layer and get the output stride of 16
+        resnet34_16s = models.resnet34(fully_conv=True,
+                                      pretrained=True,
+                                      output_stride=16,
+                                      remove_avg_pool_layer=True)
+        
+        # Randomly initialize the 1x1 Conv scoring layer
+        resnet34_16s.fc = nn.Conv2d(resnet34_16s.inplanes, num_classes, 1)
+        
+        self.resnet34_16s = resnet34_16s
+        
+        self._normal_initialization(self.resnet34_16s.fc)
+        
+        
+    def _normal_initialization(self, layer):
+        
+        layer.weight.data.normal_(0, 0.01)
+        layer.bias.data.zero_()
+        
+    def forward(self, x):
+        
+        input_spatial_dim = x.size()[2:]
+        
+        x = self.resnet34_16s(x)
+        
+        return x
