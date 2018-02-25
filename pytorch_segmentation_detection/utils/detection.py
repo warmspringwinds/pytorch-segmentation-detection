@@ -338,6 +338,9 @@ class AnchorBoxesManager():
         # Tensor with coordinates has additional dim with 4 elements: x, y, height, width
         original_shape.append(4)
         
+        # TODO: the rest of the code probably belongs better to the dataloader
+        # and we probably have to move it there
+        
         target_deltas_reshaped_back = target_deltas.view(original_shape)
         
         target_deltas_reshaped_back = target_deltas_reshaped_back.permute(2, 3, 0, 1).contiguous()
