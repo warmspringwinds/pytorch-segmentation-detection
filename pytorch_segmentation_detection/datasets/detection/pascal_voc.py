@@ -12,7 +12,8 @@ from ...utils.detection import (compute_bboxes_ious,
                                 display_bboxes_center_xywh,
                                 compute_network_output_feature_map_size,
                                 AnchorBoxesManager,
-                                pad_to_size_with_bounding_boxes)
+                                pad_to_size_with_bounding_boxes,
+                               random_crop_with_bounding_boxes)
 
 
 class PascalVOCDetection(data.Dataset):
@@ -33,7 +34,7 @@ class PascalVOCDetection(data.Dataset):
     def __init__(self, images_folder_path,
                  annotation_json,
                  image_transform,
-                 input_image_size=(600, 600)
+                 input_image_size=(224, 224)
                 ):
         """Constructor function for the PascalVOCDetection class.
         
@@ -87,13 +88,19 @@ class PascalVOCDetection(data.Dataset):
         
         ground_truth_labels = torch.LongTensor( bboxes_classes )
         
-        pil_img_padded, ground_truth_boxes_center_xywh_padded = pad_to_size_with_bounding_boxes(input_img=pil_img,
-                                                                                                size=self.input_size,
+        #pil_img_padded, ground_truth_boxes_center_xywh_padded = pad_to_size_with_bounding_boxes(input_img=pil_img,
+        #                                                                                        size=self.input_size,
+        #                                                                                        bboxes_center_xywh=ground_truth_boxes_center_xywh)
+        
+        pil_img_padded, ground_truth_boxes_center_xywh_padded = random_crop_with_bounding_boxes(input_img=pil_img,
+                                                                                                crop_size=self.input_size,
                                                                                                 bboxes_center_xywh=ground_truth_boxes_center_xywh)
+                                                                                                
         
         target_deltas, target_classes = self.anchor_box_manager.encode(ground_truth_boxes_center_xywh=ground_truth_boxes_center_xywh_padded,
                                                                        ground_truth_labels=ground_truth_labels)
         
         img_tensor_transformed = self.image_transform(pil_img_padded)
         
+        #return pil_img_padded, ground_truth_boxes_center_xywh_padded
         return img_tensor_transformed, target_deltas, target_classes

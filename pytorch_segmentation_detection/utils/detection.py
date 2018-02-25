@@ -1,5 +1,6 @@
 import torch
 import math
+import random
 import numpy as np
 
 from matplotlib import pyplot as plt
@@ -9,7 +10,87 @@ from PIL import Image, ImageOps
 from torch.autograd import Variable
 
 
+def random_crop_with_bounding_boxes(input_img, crop_size, bboxes_center_xywh, fill_label=0):
+    """A function that pads image to the size with fill_label if the input image is smaller
+    and updates the coordinates of bounding boxes in a format of center_xywh that were defined
+    on the original image.
+        
+    Parameters
+    ----------
+    input_img : PIL image
+        Tuple with height and width sizes of the image
+    size : tuple of ints
+        Tuple of ints representing width and height of a desired padded image
+    bboxes_center_xywh: torch.FloatTensor of size (N, 4)
+        Tensor containing bounding boxes defined in center_xywh format
+    fill_label : int
+        A value used to fill image in the padded areas.
+        
+    Returns
+    -------
+    processed_img: PIL image
+        Image that was padded to the desired size
+        
+    bboxes_center_xywhh_padded : torch.FloatTensor
+        Tensor that contains updated with respect to performed padding
+        coordinates of bounding boxes in a center_xywh format.
+    """
+    
+    padded_img_pil, padded_bboxes_center_xywh = pad_to_size_with_bounding_boxes(input_img, crop_size, bboxes_center_xywh)
+        
+    # # We assume that inputs were of the same size before padding.
+    # # So they are of the same size after the padding
+    w, h = padded_img_pil.size
 
+    th, tw = crop_size
+
+    if w == tw and h == th:
+        print padded_img_pil, padded_bboxes_center_xywh
+
+    x1 = random.randint(0, w - tw)
+    y1 = random.randint(0, h - th)
+
+    res_img_pil = padded_img_pil.crop((x1, y1, x1 + tw, y1 + th))
+
+    padded_bboxes_center_xyxy = convert_bbox_center_xywh_tensor_to_xyxy(padded_bboxes_center_xywh)
+
+    padded_bboxes_center_xyxy_cropped = padded_bboxes_center_xyxy - torch.Tensor([x1,y1,x1,y1])
+    padded_bboxes_center_xyxy_cropped[:,0::2].clamp_(min=0, max=tw-1)
+    padded_bboxes_center_xyxy_cropped[:,1::2].clamp_(min=0, max=th-1)
+
+    padded_bboxes_center_xywh_cropped = convert_bbox_xyxy_tensor_to_center_xywh(padded_bboxes_center_xyxy_cropped)
+    
+    return res_img_pil, padded_bboxes_center_xywh_cropped
+
+
+def convert_bbox_xyxy_tensor_to_center_xywh(bbox_xyxy_tensor):
+    """Function to convert bounding boxes in format (x_center, y_center, width, height)
+    to a format of (x_min, y_min, x_max, y_max).
+    
+    Works with a tensors of a (N, 4) shape.
+    
+    Parameters
+    ----------
+    bbox_xywh_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in center_xywh format
+        
+    Returns
+    -------
+    bbox_xyxy_tensor : FloatTensor of shape (N, 4)
+        Tensor with bounding boxes in xyxy format
+    """
+    
+    bbox_center_xywh_tensor = bbox_xyxy_tensor.clone()
+    
+    # Getting top left corner
+    bbox_center_xywh_tensor[:, 0] = (bbox_xyxy_tensor[:, 0] + bbox_xyxy_tensor[:, 2]) * 0.5
+    bbox_center_xywh_tensor[:, 1] = (bbox_xyxy_tensor[:, 1] + bbox_xyxy_tensor[:, 3]) * 0.5
+    
+    # Getting bottom right corner
+    bbox_center_xywh_tensor[:, 2] = bbox_xyxy_tensor[:, 2] - bbox_xyxy_tensor[:, 0]
+    bbox_center_xywh_tensor[:, 3] = bbox_xyxy_tensor[:, 3] - bbox_xyxy_tensor[:, 1]
+    
+    return bbox_center_xywh_tensor
 
 def box_nms(bboxes, scores, threshold=0.5, mode='union'):
     """Function that performes non-maximum suppression of predicted
