@@ -45,7 +45,7 @@ def random_crop_with_bounding_boxes(input_img, crop_size, bboxes_center_xywh, fi
     th, tw = crop_size
 
     if w == tw and h == th:
-        print padded_img_pil, padded_bboxes_center_xywh
+        return padded_img_pil, padded_bboxes_center_xywh
 
     x1 = random.randint(0, w - tw)
     y1 = random.randint(0, h - th)
@@ -55,8 +55,8 @@ def random_crop_with_bounding_boxes(input_img, crop_size, bboxes_center_xywh, fi
     padded_bboxes_center_xyxy = convert_bbox_center_xywh_tensor_to_xyxy(padded_bboxes_center_xywh)
 
     padded_bboxes_center_xyxy_cropped = padded_bboxes_center_xyxy - torch.Tensor([x1,y1,x1,y1])
-    padded_bboxes_center_xyxy_cropped[:,0::2].clamp_(min=0, max=tw-1)
-    padded_bboxes_center_xyxy_cropped[:,1::2].clamp_(min=0, max=th-1)
+    #padded_bboxes_center_xyxy_cropped[:,0::2].clamp_(min=0, max=tw-1)
+    #padded_bboxes_center_xyxy_cropped[:,1::2].clamp_(min=0, max=th-1)
 
     padded_bboxes_center_xywh_cropped = convert_bbox_xyxy_tensor_to_center_xywh(padded_bboxes_center_xyxy_cropped)
     
@@ -251,7 +251,7 @@ class AnchorBoxesManager():
                  input_image_size=(600, 600),
                  anchor_areas=[128*128, 256*256, 512*512],
                  aspect_ratios=[1/2., 1/1., 2/1.],
-                 stride=16
+                 stride=32
                 ):
         """Constructor function for the anchor box manager class.
         
@@ -468,9 +468,9 @@ class AnchorBoxesManager():
         # TODO: during testing the threshold of 0.5 seemed to be too strict,
         # some groundtruth boxes didn't have any matched anchor boxes
 
-        target_labels[anchor_boxes_best_groundtruth_match_ious < 0.5] = 0
+        target_labels[anchor_boxes_best_groundtruth_match_ious < 0.4] = 0
 
-        ignore = (anchor_boxes_best_groundtruth_match_ious > 0.4) & (anchor_boxes_best_groundtruth_match_ious < 0.5)
+        ignore = (anchor_boxes_best_groundtruth_match_ious > 0.3) & (anchor_boxes_best_groundtruth_match_ious < 0.4)
 
         target_labels[ignore] = -1
         

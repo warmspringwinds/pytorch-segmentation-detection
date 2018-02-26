@@ -34,7 +34,7 @@ class PascalVOCDetection(data.Dataset):
     def __init__(self, images_folder_path,
                  annotation_json,
                  image_transform,
-                 input_image_size=(224, 224)
+                 input_image_size=(600, 600)
                 ):
         """Constructor function for the PascalVOCDetection class.
         
