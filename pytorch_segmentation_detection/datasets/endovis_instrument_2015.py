@@ -24,8 +24,11 @@ class Endovis_Instrument_2015(data.Dataset):
     # Urls of original pascal and additional segmentations masks
     URL = 'https://endovissub-instrument.grand-challenge.org/'
 
-    relative_image_save_path = 'Processed/images'
-    relative_annotation_save_path = 'Processed/annotations'
+    relative_image_save_path_train = 'Processed/train/images'
+    relative_annotation_save_path_train = 'Processed/train/annotations'
+    
+    relative_image_save_path_validation = 'Processed/val/images'
+    relative_annotation_save_path_validation = 'Processed/val/annotations'
     
     
     def __init__(self,
@@ -34,7 +37,8 @@ class Endovis_Instrument_2015(data.Dataset):
                  joint_transform=None,
                  prepare_dataset=False,
                  dataset_type=0,
-                 split_mode=2):
+                 split_mode=2,
+                 validation_datasets_numbers=[2]):
         
         self.root = root
         
@@ -42,12 +46,22 @@ class Endovis_Instrument_2015(data.Dataset):
         
         self.dataset_type = dataset_type
         
+        self.validation_datasets_numbers = validation_datasets_numbers
+        
         if prepare_dataset:
             
-            self._prepare_dataset()
-        
-        saved_images_path = os.path.join(self.root, self.relative_image_save_path)
-        saved_annotations_path = os.path.join(self.root, self.relative_annotation_save_path)
+            self._prepare_dataset(train=True)
+            self._prepare_dataset(train=False)
+            
+        if train:
+            
+            saved_images_path = os.path.join(self.root, self.relative_image_save_path_train)
+            saved_annotations_path = os.path.join(self.root, self.relative_annotation_save_path_train)
+        else:
+            
+            saved_images_path = os.path.join(self.root, self.relative_image_save_path_validation)
+            saved_annotations_path = os.path.join(self.root, self.relative_annotation_save_path_validation)
+            
 
         # We need this for __getitem__
         self.saved_images_template = os.path.join(saved_images_path, "{0:08d}.jpg")
@@ -100,14 +114,25 @@ class Endovis_Instrument_2015(data.Dataset):
         return _img, _target
         
         
-    def _prepare_dataset(self):
+    def _prepare_dataset(self, train=True):
         """
         Creates a new folder with the name Processed in the root of the dataset
         where all the images and annotations are stored as plain jpg and png images.
         """
+        
+        datasets_numbers = set(xrange(1, 5))
 
-        annotation_folder_to_save = os.path.join(self.root, 'Processed/annotations')
-        images_folder_to_save = os.path.join(self.root, 'Processed/images')
+        if train:
+            
+            annotation_folder_to_save = os.path.join(self.root, self.relative_annotation_save_path_train )
+            images_folder_to_save = os.path.join(self.root, self.relative_image_save_path_train)
+            datasets_numbers = datasets_numbers - set(self.validation_datasets_numbers)
+        else:
+            
+            annotation_folder_to_save = os.path.join(self.root, self.relative_annotation_save_path_validation )
+            images_folder_to_save = os.path.join(self.root, self.relative_image_save_path_validation)
+            datasets_numbers = self.validation_datasets_numbers
+            
 
 
         annotation_save_template = os.path.join( annotation_folder_to_save, "{0:08d}.png" )
@@ -127,7 +152,7 @@ class Endovis_Instrument_2015(data.Dataset):
         image_number_offset = 0
 
         # We have overall 4 datasets
-        for current_dataset_number in xrange(1, 5): 
+        for current_dataset_number in datasets_numbers:
 
             current_dataset_path = dataset_template.format(current_dataset_number)
 
