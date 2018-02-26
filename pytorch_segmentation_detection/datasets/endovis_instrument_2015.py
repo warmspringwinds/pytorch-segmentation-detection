@@ -40,6 +40,10 @@ class Endovis_Instrument_2015(data.Dataset):
                  split_mode=2,
                  validation_datasets_numbers=[2]):
         
+        # Dataset types:
+        # 0 -- binary
+        # 1 -- multiclass
+        
         self.root = root
         
         self.joint_transform = joint_transform
