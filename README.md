@@ -61,10 +61,9 @@ The code to acquire the training and validating the model is also provided in th
 
 ### DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs
 
-
-Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
-by Long et al. We trained and tested ```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012
-dataset.
+Here you can find models that were described in the paper "DeepLab: Semantic Image Segmentation with Deep 
+Convolutional Nets, Atrous Convolution, and Fully Connected CRFs" by Chen et al. We trained and tested 
+```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012 dataset.
 
 You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
 
