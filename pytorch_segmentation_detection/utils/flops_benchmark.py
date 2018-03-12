@@ -132,7 +132,22 @@ def reset_flops_count(self):
     add_batch_counter_variables_or_reset(self)
     
     self.apply(add_flops_counter_variable_or_reset)
+
+# temporary mask=2
+def add_flops_mask(module, mask=2):
     
+    def add_flops_mask_func(module):
+        
+        if isinstance(module, torch.nn.Conv2d):
+            
+            module.__mask__ = mask
+    
+    module.apply(add_flops_mask_func)
+
+    
+def remove_flops_mask(module):
+    
+    module.apply(add_flops_mask_variable_or_reset)
     
 # ---- Internal functions
 
@@ -217,6 +232,7 @@ def remove_flops_counter_hook_function(module):
 # --- Masked flops counting
 
 
+# Also being run in the initialization
 def add_flops_mask_variable_or_reset(module):
     
     if isinstance(module, torch.nn.Conv2d):
