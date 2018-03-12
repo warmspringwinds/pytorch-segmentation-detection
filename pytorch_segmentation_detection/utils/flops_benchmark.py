@@ -59,9 +59,10 @@ def add_flops_counting_methods(net_main_module):
     net_main_module.reset_flops_count = reset_flops_count.__get__(net_main_module)
     net_main_module.compute_average_flops_cost = compute_average_flops_cost.__get__(net_main_module)
     
-    
     net_main_module.reset_flops_count()
     
+    # Adding varialbles necessary for masked flops computation
+    net_main_module.apply(add_flops_mask_variable_or_reset)
     
     return net_main_module
 
@@ -131,7 +132,7 @@ def reset_flops_count(self):
     add_batch_counter_variables_or_reset(self)
     
     self.apply(add_flops_counter_variable_or_reset)
-
+    
     
 # ---- Internal functions
 
@@ -212,3 +213,12 @@ def remove_flops_counter_hook_function(module):
         if hasattr(module, '__flops_handle__'):
             
             module.__flops_handle__.remove()
+
+# --- Masked flops counting
+
+
+def add_flops_mask_variable_or_reset(module):
+    
+    if isinstance(module, torch.nn.Conv2d):
+        
+        module.__mask__ = None
