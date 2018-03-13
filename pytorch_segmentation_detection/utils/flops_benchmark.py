@@ -194,8 +194,13 @@ def batch_counter_hook(module, input, output):
 def add_batch_counter_variables_or_reset(module):
     
     module.__batch_counter__ = 0
-    
+
+
 def add_batch_counter_hook_function(module):
+    
+    if hasattr(module, '__batch_counter_handle__'):
+        
+        return
     
     handle = module.register_forward_hook(batch_counter_hook)
     module.__batch_counter_handle__ = handle
@@ -219,6 +224,10 @@ def add_flops_counter_variable_or_reset(module):
 def add_flops_counter_hook_function(module):
         
     if isinstance(module, torch.nn.Conv2d):
+        
+        if hasattr(module, '__flops_handle__'):
+            
+            return
 
         handle = module.register_forward_hook(conv_flops_counter_hook)
         module.__flops_handle__ = handle
