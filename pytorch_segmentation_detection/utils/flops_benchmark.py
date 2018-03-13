@@ -206,6 +206,8 @@ def remove_batch_counter_hook_function(module):
     if hasattr(module, '__batch_counter_handle__'):
         
         module.__batch_counter_handle__.remove()
+        
+        del module.__batch_counter_handle__
 
 
 def add_flops_counter_variable_or_reset(module):
@@ -228,6 +230,8 @@ def remove_flops_counter_hook_function(module):
         if hasattr(module, '__flops_handle__'):
             
             module.__flops_handle__.remove()
+            
+            del module.__flops_handle__
 
 # --- Masked flops counting
 
