@@ -107,7 +107,8 @@ def start_flops_count(self):
     
     add_batch_counter_hook_function(self)
     
-    self.apply(add_flops_counter_hook_function)
+    for module in self.modules():
+        add_flops_counter_hook_function(module)
 
     
 def stop_flops_count(self):
@@ -122,7 +123,8 @@ def stop_flops_count(self):
     
     remove_batch_counter_hook_function(self)
     
-    self.apply(remove_flops_counter_hook_function)
+    for module in self.modules():
+        remove_flops_counter_hook_function(module)
 
     
 def reset_flops_count(self):
@@ -136,7 +138,8 @@ def reset_flops_count(self):
     
     add_batch_counter_variables_or_reset(self)
     
-    self.apply(add_flops_counter_variable_or_reset)
+    for module in self.modules():
+        add_flops_counter_variable_or_reset(module)
 
 # temporary mask=2
 def add_flops_mask(module, mask=2):
@@ -147,12 +150,13 @@ def add_flops_mask(module, mask=2):
             
             module.__mask__ = mask
     
-    module.apply(add_flops_mask_func)
+    for module_ in module.modules():
+        add_flops_mask_func(module_)
 
     
 def remove_flops_mask(module):
-    
-    module.apply(add_flops_mask_variable_or_reset)
+    for module_ in module.modules():
+        add_flops_mask_variable_or_reset(module_)
     
 # ---- Internal functions
 
