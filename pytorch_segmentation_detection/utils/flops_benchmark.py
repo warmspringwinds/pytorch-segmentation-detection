@@ -138,8 +138,8 @@ def reset_flops_count(self):
     
     self.apply(add_flops_counter_variable_or_reset)
 
-# temporary mask=2
-def add_flops_mask(module, mask=2):
+
+def add_flops_mask(module, mask):
     
     def add_flops_mask_func(module):
         
@@ -172,13 +172,22 @@ def conv_flops_counter_hook(conv_module, input, output):
     # We count multiply-add as 2 flops
     conv_per_position_flops = 2 * kernel_height * kernel_width * in_channels * out_channels
     
-    overall_conv_flops = conv_per_position_flops * batch_size * output_height * output_width
+    active_elements_count = batch_size * output_height * output_width
+    
+    if conv_module.__mask__ is not None:
+        
+        # (b, 1, h, w)
+        flops_mask = __mask__.expand(batch_size, 1, output_height, output_width)
+        active_elements_count = flops_mask.sum()
+        
+    
+    overall_conv_flops = conv_per_position_flops * active_elements_count
       
     bias_flops = 0
     
     if conv_module.bias is not None:
         
-        bias_flops = output_height * output_width * out_channels * batch_size
+        bias_flops = out_channels * active_elements_count
     
     overall_flops = overall_conv_flops + bias_flops
     
