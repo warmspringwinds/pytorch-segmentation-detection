@@ -58,7 +58,6 @@ def add_flops_counting_methods(net_main_module):
     net_main_module.stop_flops_count = stop_flops_count.__get__(net_main_module)
     net_main_module.reset_flops_count = reset_flops_count.__get__(net_main_module)
     net_main_module.compute_average_flops_cost = compute_average_flops_cost.__get__(net_main_module)
-    net_main_module.is_flops_count_on = is_flops_count_on.__get__(net_main_module)
     
     net_main_module.reset_flops_count()
     
