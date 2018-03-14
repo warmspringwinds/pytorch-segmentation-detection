@@ -68,9 +68,6 @@ def add_flops_counting_methods(net_main_module):
     return net_main_module
 
 
-def is_flops_count_on(self):
-    
-    return hasattr(self, '__batch_counter_handle__')
 
 def compute_average_flops_cost(self):
     """
@@ -153,6 +150,7 @@ def add_flops_mask(module, mask):
 def remove_flops_mask(module):
     
     module.apply(add_flops_mask_variable_or_reset)
+
     
 # ---- Internal functions
 
