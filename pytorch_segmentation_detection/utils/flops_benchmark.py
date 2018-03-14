@@ -19,6 +19,9 @@ def add_flops_counting_methods(net_main_module):
     
     fcn.compute_average_flops_cost() / 1e9 / 2 # Result in GFLOPs per image in batch
     
+    Important: dividing by 2 only works for resnet models -- see below for the details
+    of flops computation.
+    
     Attention: we are counting multiply-add as two flops in this work, because in
     most resnet models convolutions are bias-free (BN layers act as bias there)
     and it makes sense to count muliply and add as separate flops therefore.
