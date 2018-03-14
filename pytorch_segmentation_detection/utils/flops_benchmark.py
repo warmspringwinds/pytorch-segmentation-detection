@@ -177,7 +177,7 @@ def conv_flops_counter_hook(conv_module, input, output):
     if conv_module.__mask__ is not None:
         
         # (b, 1, h, w)
-        flops_mask = __mask__.expand(batch_size, 1, output_height, output_width)
+        flops_mask = conv_module.__mask__.expand(batch_size, 1, output_height, output_width)
         active_elements_count = flops_mask.sum()
         
     
