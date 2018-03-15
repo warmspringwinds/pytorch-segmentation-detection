@@ -4,7 +4,7 @@
 #
 
 # Credit:
-# This code was copied (except from a slight labeling change) from the official repository of Cityscapes:
+# This code was copied from the official repository of Cityscapes:
 # https://github.com/mcordts/cityscapesScripts/blob/master/cityscapesscripts/helpers/labels.py
 
 # It provides an easy way to convert labels and get a respective name of the class for each label.
@@ -102,7 +102,7 @@ labels = [
     Label(  'train'                , 31 ,       16 , 'vehicle'         , 7       , True         , False        , (  0, 80,100) ),
     Label(  'motorcycle'           , 32 ,       17 , 'vehicle'         , 7       , True         , False        , (  0,  0,230) ),
     Label(  'bicycle'              , 33 ,       18 , 'vehicle'         , 7       , True         , False        , (119, 11, 32) ),
-    Label(  'license plate'        , -1 ,       255 , 'vehicle'         , 7       , False        , True         , (  0,  0,142) ),
+    Label(  'license plate'        , -1 ,       -1 , 'vehicle'         , 7       , False        , True         , (  0,  0,142) ),
 ]
 
 
