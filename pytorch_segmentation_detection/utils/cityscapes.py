@@ -4,7 +4,7 @@
 #
 
 # Credit:
-# This code was copied from the official repository of Cityscapes:
+# This code was copied (except from a slight labeling change) from the official repository of Cityscapes:
 # https://github.com/mcordts/cityscapesScripts/blob/master/cityscapesscripts/helpers/labels.py
 
 # It provides an easy way to convert labels and get a respective name of the class for each label.
