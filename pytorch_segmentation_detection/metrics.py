@@ -13,12 +13,16 @@ class RunningConfusionMatrix():
         List that contains int values that represent classes.
     overall_confusion_matrix : sklean.confusion_matrix object
         Container of the sum of all confusion matrices. Used to compute MIOU at the end.
+    ignore_label : int
+        A label representing parts that should be ignored during
+        computation of metrics
         
     """
     
-    def __init__(self, labels):
+    def __init__(self, labels, ignore_label=255):
         
         self.labels = labels
+        self.ignore_label = ignore_label
         self.overall_confusion_matrix = None
         
     def update_matrix(self, ground_truth, prediction):
@@ -36,6 +40,12 @@ class RunningConfusionMatrix():
         
         # Mask-out value is ignored by default in the sklearn
         # read sources to see how that was handled
+        # But sometimes all the elements in the groundtruth can
+        # be equal to ignore value which will cause the crush
+        # of scikit_learn.confusion_matrix(), this is why we check it here
+        if (ground_truth == self.ignore_label).all():
+            
+            return
         
         current_confusion_matrix = confusion_matrix(y_true=ground_truth,
                                                     y_pred=prediction,
