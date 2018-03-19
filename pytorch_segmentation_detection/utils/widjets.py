@@ -12,6 +12,20 @@ import math
 def create_dataset_paginated_display_widget(dataset_obj, number_of_images_per_page=5, ignore_label=255):
     """Creates a paginated widjet object for a pytorch.dataset object.
     
+    Example:
+    
+    (assuming you are running in the jupyter notebook)
+    
+    %matplotlib inline
+    
+    from IPython.display import display
+    
+    widjet = create_dataset_paginated_display_widget(trainset)
+
+    display(widjet)
+    
+    (will display an interactive paginated representation of your dataset)
+    
     Parameters
     ----------
     dataset_obj : data.Dataset object
