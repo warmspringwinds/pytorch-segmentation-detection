@@ -96,8 +96,8 @@ Additional Qualitative results can be found on [this youtube playlist](https://w
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| Resnet-18-8s   | RV-VOC12  | 96.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/4lemtiaacrytatu/resnet_18_8s_best.pth?dl=0)            |
-| Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog.            |
+| Resnet-18-8s   | Seq # 3  | 96.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/4lemtiaacrytatu/resnet_18_8s_best.pth?dl=0)            |
+| Resnet-34-8s   | Seq # 3  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog.            |
 
 
 Qualitative results (on validation sequence):
@@ -108,8 +108,8 @@ Qualitative results (on validation sequence):
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| Resnet-18-8s   | RV-VOC12  | 81.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/p9ey655mmzb3v5l/resnet_18_8s_multiclass_best.pth?dl=0)            |
-| Resnet-34-8s   | RV-VOC12  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog            |
+| Resnet-18-8s   | Seq # 3  | 81.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/p9ey655mmzb3v5l/resnet_18_8s_multiclass_best.pth?dl=0)            |
+| Resnet-34-8s   | Seq # 3  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog            |
 
 Qualitative results (on validation sequence):
 
@@ -122,8 +122,8 @@ Qualitative results (on validation sequence):
  
  | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| Resnet-18-8s   | RV-VOC12  | 60.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/vdy4sqkk2s3f5v5/resnet_18_8s_cityscapes_best.pth?dl=0)            |
-| Resnet-34-8s   | RV-VOC12  | 66.71   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/cu1ypmlpog4ej8u/resnet_34_8s_cityscapes_best.pth?dl=0)           |
+| Resnet-18-8s   | Validation set  | 60.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/vdy4sqkk2s3f5v5/resnet_18_8s_cityscapes_best.pth?dl=0)            |
+| Resnet-34-8s   | Validation set  | 66.71   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/cu1ypmlpog4ej8u/resnet_34_8s_cityscapes_best.pth?dl=0)           |
 
 
 ## Applications
