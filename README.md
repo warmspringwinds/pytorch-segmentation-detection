@@ -82,25 +82,6 @@ This code has been used to train networks with this performance:
 | Resnet-101-16s (orig)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
 
 
-### Fully Convolutional Networks for Semantic Segmentation (FCNs)
-
-Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
-by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` (in prog.) and ```FCN-8s``` (in prog.) against PASCAL VOC 2012
-dataset.
-
-You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
-
-This code has been used to train networks with this performance:
-
-| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
-|------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| FCN-32s (ours)   | RV-VOC12  | 60.0   | in prog.           | in prog.       |41 ms.| [Dropbox](https://www.dropbox.com/s/8l049d19k46ts9b/fcn_32s_best.pth?dl=0)            |
-| FCN-16s (ours)   | RV-VOC12  | in prog.   | in prog.           | in prog.  | in prog.     | in prog.            |
-| FCN-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10         | in prog. |                     |
-| FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00         | in prog. |                     |
-| FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30         | in prog. |                     |
-
 
 ## Endovis 2017 (Segmentation)
 
@@ -133,6 +114,17 @@ Qualitative results (on validation sequence):
 Qualitative results (on validation sequence):
 
 ![Alt text](pytorch_segmentation_detection/recipes/endovis_2017/segmentation/validation_multiclass.gif?raw=true "Title")
+
+
+## Cityscapes
+
+ The dataset contains video sequences recorded in street scenes from 50 different cities, with high quality pixel-level annotations of  ```5 000``` frames. The annotations contain ```19``` classes which represent cars, road, traffic signs and so on.
+ 
+ | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-18-8s   | RV-VOC12  | 60.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/vdy4sqkk2s3f5v5/resnet_18_8s_cityscapes_best.pth?dl=0)            |
+| Resnet-34-8s   | RV-VOC12  | 66.71   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/cu1ypmlpog4ej8u/resnet_34_8s_cityscapes_best.pth?dl=0)           |
+
 
 ## Applications
 
