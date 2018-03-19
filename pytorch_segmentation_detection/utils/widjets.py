@@ -64,8 +64,10 @@ def create_dataset_paginated_display_widget(dataset_obj, number_of_images_per_pa
             f, axies_list = plt.subplots(1, tuple_size, figsize=(20, 10))
             
             sample_element_axis_pairs = zip(dataset_sample_tuple, axies_list)
-        
-            map(lambda sample_axis_pair: bind_axis_and_data(sample_axis_pair), sample_element_axis_pairs)
+            
+            for index, sample_axis_pair in enumerate(sample_element_axis_pairs):
+                
+                bind_axis_and_data(sample_axis_pair, index)
         
     
     slider_obj = IntSlider(min=0, max=number_of_pages-1, continuous_update=False)
@@ -102,7 +104,7 @@ def make_annotation_display_friendly(annotation, ignore_label=255):
 
     return annotation
 
-def bind_axis_and_data(data_axis_pair):
+def bind_axis_and_data(data_axis_pair, position):
     """Updates segmentation annotation so that labels become more
      distinguishable while displayed. Ignore is changed to become 0.
     
@@ -112,6 +114,8 @@ def bind_axis_and_data(data_axis_pair):
         Tuple containing data (int or PIL.Image) which reresents groundtruth
         segmentation or label and an matplotlib's axis object which is supposed
         to be used to display this data.
+    postion : int
+        Position of the displayed data in the frame (starting from the left)
     """
     
     data, axis = data_axis_pair
@@ -136,7 +140,7 @@ def bind_axis_and_data(data_axis_pair):
     
     # If it is a segmentatio annotation image, adjust the
     # color to properly display
-    if data.ndim == 2:
+    if position != 0:
         
         data = make_annotation_display_friendly(data)
         axis.imshow(data, cmap="tab20b")
