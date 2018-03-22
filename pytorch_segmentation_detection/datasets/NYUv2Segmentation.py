@@ -33,6 +33,9 @@ class NYUv2Segmentation(data.Dataset):
         # dataset_type:
         # 0 - train
         # 1 - test
+        
+        # Used for remapping from original labels to training ones
+        self.ordered_train_labels = np.asarray( [self.ignore_label] + range(13) )
 
         self.dataset_root = dataset_root
         self.joint_transform = joint_transform
@@ -66,7 +69,8 @@ class NYUv2Segmentation(data.Dataset):
         
         _target_np = np.asarray(_target).copy()
         
-        _target_np[ _target_np == 0] = self.ignore_label
+        # https://stackoverflow.com/questions/8188726/how-do-i-do-this-array-lookup-replace-with-numpy
+        _target_np = self.ordered_train_labels[_target_np].astype(np.uint8)
         
         _target = Image.fromarray(_target_np)
 
