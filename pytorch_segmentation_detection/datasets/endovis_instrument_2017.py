@@ -48,6 +48,9 @@ class Endovis_Instrument_2017(data.Dataset):
     
     annotations_dir_name = 'ground_truth'
     
+    # Maps dataset type: binary, multiclass, types --> to number of classes
+    number_of_classes_list = [2, 4, 7]
+    
     
     parts_class_to_label_mapping =  {
                                       'Background': 0,
@@ -162,6 +165,8 @@ class Endovis_Instrument_2017(data.Dataset):
         # 1 -- parts
         # 2 -- types
         
+        self.number_of_classes = self.number_of_classes_list[dataset_type]
+       
         # Just get the list of class labels for convenience
         self.parts_class_labels = sorted(self.parts_class_to_label_mapping.values())
         
