@@ -53,6 +53,13 @@ class LabeledFacesInTheWildParts(data.Dataset):
         images_path = os.path.join(dataset_root, self.images_sub_folder)
 
         self.annotations_filenames = glob(os.path.join(annotations_path, '*.ppm') )
+        
+        if train:
+            
+            self.annotations_filenames = self.annotations_filenames[200:]
+        else:
+            
+            self.annotations_filenames = self.annotations_filenames[:200]
 
         self.images_filenames = []
 
