@@ -32,12 +32,16 @@ class PascalVOCSegmentation(data.Dataset):
     
     
     def __init__(self,
-                 root,
+                 root=None,
                  train=True,
                  joint_transform=None,
                  download=False,
                  split_mode=2):
         
+        if root is None:
+            
+            root = os.path.expanduser( '~/.pytorch-segmentation-detection/datasets/pascal_voc_segmentation' )
+            
         self.root = root
         self.pascal_tar_full_download_filename = os.path.join(self.root, self.PASCAL_TAR_FILENAME)
         self.berkeley_tar_full_download_filename = os.path.join(self.root, self.BERKELEY_TAR_FILENAME)
