@@ -456,5 +456,16 @@ class RandomRotation(object):
         """
 
         angle = self.get_params(self.degrees)
-
-        return map(lambda input: F.rotate(input, angle, self.resample, self.expand, self.center), inputs)
+        results = []
+        
+        for input in inputs[:-1]:
+            
+            result = F.rotate(input, angle, Image.BILINEAR, self.expand, self.center)
+            results.append(result)
+        
+        # last one is assumed to be an annotation
+        # TODO: make cleaner
+        result = F.rotate(inputs[-1], angle, Image.NEAREST, self.expand, self.center)
+        results.append(result)
+        
+        return results
