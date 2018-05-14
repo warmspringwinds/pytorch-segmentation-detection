@@ -26,8 +26,8 @@ include_directories("/home/daniil/projects/speedup/caffe2_build/include/")
 include_directories("/home/daniil/cuda/include")
 
 
-#ADD_EXECUTABLE(main main.cpp)
-#TARGET_LINK_LIBRARIES(main ${CAFFE2_LIB} ${CAFFE2_GPU_LIB} ${PROTOBUF_LIBRARY} ${GLOG_LIB} ${GFLAGS_LIB} ${CUDA_LIBRARIES} #${CUDA_CUDART_LIBRARY} ${CUDA_curand_LIBRARY} ${NCCL_LIB} ${CUDNN_LIB})
+ADD_EXECUTABLE(benchmark benchmark.cpp)
+TARGET_LINK_LIBRARIES(benchmark ${CAFFE2_LIB} ${CAFFE2_GPU_LIB} ${PROTOBUF_LIBRARY} ${GLOG_LIB} ${GFLAGS_LIB} ${CUDA_LIBRARIES} ${CUDA_CUDART_LIBRARY} ${CUDA_curand_LIBRARY} ${NCCL_LIB} ${CUDNN_LIB})
 
 ADD_EXECUTABLE(read_allocated_gpu_memory read_allocated_gpu_memory.cpp)
 TARGET_LINK_LIBRARIES(read_allocated_gpu_memory ${CAFFE2_LIB} ${CAFFE2_GPU_LIB} ${PROTOBUF_LIBRARY} ${GLOG_LIB} ${GFLAGS_LIB} ${CUDA_LIBRARIES} ${CUDA_CUDART_LIBRARY} ${CUDA_curand_LIBRARY} ${NCCL_LIB} ${CUDNN_LIB})
