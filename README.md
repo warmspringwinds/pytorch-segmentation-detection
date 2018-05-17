@@ -96,9 +96,11 @@ Additional Qualitative results can be found on [this youtube playlist](https://w
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-9-8s   | Seq # 3 *  | 96.1   | in prog.           | in prog.       |13.3 ms.| [Dropbox](https://www.dropbox.com/s/3l7o1sfrnqhnpw8/resnet_9_8s.pth?dl=0)            |
 | Resnet-18-8s   | Seq # 3  | 96.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/4lemtiaacrytatu/resnet_18_8s_best.pth?dl=0)            |
 | Resnet-34-8s   | Seq # 3  | in prog.   | in prog.           | in prog.  | 50 ms.  | in prog.            |
 
+* -- Specified method tested on the 0.5 reduced resoulution (512 x 640).
 
 Qualitative results (on validation sequence):
 
