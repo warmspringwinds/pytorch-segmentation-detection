@@ -1,5 +1,47 @@
+import numpy as np
 import torch.nn as nn
 import torchvision.models as models
+
+
+def adjust_input_image_size_for_proper_feature_alignment(input_img_batch, output_stride=8):
+    """Resizes the input image to allow proper feature alignment during the
+    forward propagation.
+
+    Resizes the input image to a closest multiple of `output_stride` + 1.
+    This allows the proper alignment of features.
+    To get more details, read here:
+    https://github.com/tensorflow/models/blob/master/research/slim/nets/resnet_v1.py#L159
+
+    Parameters
+    ----------
+    input_img_batch : torch.Tensor
+        Tensor containing a single input image of size (1, 3, h, w)
+
+    output_stride : int
+        Output stride of the network where the input image batch
+        will be fed.
+
+    Returns
+    -------
+    input_img_batch_new_size : torch.Tensor
+        Resized input image batch tensor
+    """
+
+    input_spatial_dims = np.asarray( input_img_batch.shape[2:], dtype=np.float )
+
+    # Comments about proper alignment can be found here
+    # https://github.com/tensorflow/models/blob/master/research/slim/nets/resnet_v1.py#L159
+    new_spatial_dims = np.ceil(input_spatial_dims / output_stride).astype(np.int) * output_stride + 1
+
+    # Converting the numpy to list, torch.nn.functional.upsample_bilinear accepts
+    # size in the list representation.
+    new_spatial_dims = list(new_spatial_dims)
+
+    input_img_batch_new_size = nn.functional.upsample_bilinear(input=input_img_batch,
+                                                               size=new_spatial_dims)
+
+    return input_img_batch_new_size
+
 
 
 class Resnet101_8s(nn.Module):
@@ -61,20 +103,26 @@ class Resnet18_8s(nn.Module):
         self.resnet18_8s = resnet18_8s
         
         self._normal_initialization(self.resnet18_8s.fc)
-        
+                
         
     def _normal_initialization(self, layer):
         
         layer.weight.data.normal_(0, 0.01)
         layer.bias.data.zero_()
         
-    def forward(self, x):
+    def forward(self, x, feature_alignment=False):
         
         input_spatial_dim = x.size()[2:]
         
+        if feature_alignment:
+            
+            x = adjust_input_image_size_for_proper_feature_alignment(x, output_stride=8)
+        
         x = self.resnet18_8s(x)
         
-        x = nn.functional.upsample_bilinear(input=x, size=input_spatial_dim)
+        x = nn.functional.upsample(x, size=input_spatial_dim, mode='bilinear', align_corners=True)
+        
+        #x = nn.functional.upsample_bilinear(input=x, size=input_spatial_dim)#, align_corners=False)
         
         return x
 
@@ -259,9 +307,13 @@ class Resnet34_8s(nn.Module):
         layer.weight.data.normal_(0, 0.01)
         layer.bias.data.zero_()
         
-    def forward(self, x):
+    def forward(self, x, feature_alignment=False):
         
         input_spatial_dim = x.size()[2:]
+        
+        if feature_alignment:
+            
+            x = adjust_input_image_size_for_proper_feature_alignment(x, output_stride=8)
         
         x = self.resnet34_8s(x)
         
