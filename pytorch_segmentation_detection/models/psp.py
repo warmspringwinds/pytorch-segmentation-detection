@@ -18,8 +18,7 @@ class Resnet50_8s_psp(nn.Module):
         resnet50_8s = models.resnet50(fully_conv=True,
                                       pretrained=True,
                                       output_stride=8,
-                                      remove_avg_pool_layer=True,
-                                      additional_blocks=0)
+                                      remove_avg_pool_layer=True)
         
         # Randomly initialize the 1x1 Conv scoring layer
         resnet50_8s.fc = nn.Conv2d(resnet50_8s.inplanes * 2, num_classes, 1)
