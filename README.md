@@ -1,89 +1,34 @@
 # Image Segmentation and Object Detection in Pytorch 
 
-```Pytorch-Segmentation-Detection``` is a library for dense inference and training of Convolutional Neural Networks (CNNs) on Images for Segmentation and Detection.
-The aim of the library is to provide/provide a simplified way to:
+```Pytorch-Segmentation-Detection``` is a library for image segmentation and object detection.
 
-- Converting some popular general/medical/other Image Segmentation and Detection Datasets into easy-to-use for training
-format (Pytorch's dataloader).
-- Training routine with on-the-fly data augmentation (scaling, color distortion).
-- Training routine that is proved to work for particular model/dataset pair.
-- Evaluating Accuracy of trained models with common accuracy measures: Mean IOU, Mean pix. accuracy, Pixel accuracy, Mean AP.
-- Model files that were trained on a particular dataset with reported accuracy (models that were trained using
-this library with reported training routine and not models that were converted from Caffe or other framework)
-- Model definitions (like FCN-32s and others) that use weights initializations from Image Classification models like
-VGG that are officially provided by ```Pytorch/Vision``` library.
-
-So far, the library contains an implementation of FCN-32s (Long et al.), Resnet-18-8s, Resnet-34-8s (Chen et al.) image segmentation models in ```Pytorch``` and ```Pytorch/Vision``` library with training routine, reported accuracy,
-trained models for PASCAL VOC 2012 dataset. To train these models on your data, you will have
-to write a ```dataloader``` for your dataset.
-
-Models for Object Detection will be released soon.
+We report results achieved on common image segmentation/object detection datasets, provide pretrained models and scripts to reproduce the results.
 
 
-## Installation
+## Segmentation
 
-This code requires:
 
-1. [Pytorch](https://github.com/pytorch/pytorch).
+## PASCAL VOC 2012
 
-2. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
- 
-    Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
- 
-3. Clone the library:
-
- ```git clone --recursive https://github.com/warmspringwinds/pytorch-segmentation-detection```
- 
-   And use this code snippet before you start to use the library:
- 
-   ```python
-   import sys
-   # update with your path
-   # All the jupyter notebooks in the repository already have this
-   sys.path.append("/your/path/pytorch-segmentation-detection/")
-   sys.path.insert(0, '/your/path/pytorch-segmentation-detection/vision/')
-   ```
-   Here we use our [pytorch/vision](https://github.com/pytorch/vision) fork, which might
-   be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
-   We have added it as a submodule to our repository.
-
-4. Download segmentation or detection models that you want to use manually (links can be found below).
-
-## PASCAL VOC 2012 (Segmentation)
-
-Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset (RV-VOC12) and trained on
+Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset (RV-VOC12) or Full PASCAL VOC 2012 Validation dataset (VOC-2012) and trained on
 the PASCAL VOC 2012 Training data and additional Berkeley segmentation data for PASCAL VOC 12.
-It was important to test models on restricted Validation dataset to make sure no images in the
-validation dataset were seen by model during training.
-
-The code to acquire the training and validating the model is also provided in the library.
-
-
-### DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs
-
-Here you can find models that were described in the paper "DeepLab: Semantic Image Segmentation with Deep 
-Convolutional Nets, Atrous Convolution, and Fully Connected CRFs" by Chen et al. We trained and tested 
-```Resnet-18-8s```, ```Resnet-34-8s``` against PASCAL VOC 2012 dataset.
 
 You can find all the scripts that were used for training and evaluation [here](pytorch_segmentation_detection/recipes/pascal_voc/segmentation).
 
-Qualitative results:
+This code has been used to train networks with this performance:
+
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link | Related paper |
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+| Resnet-18-8s    | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            | [DeepLab](https://arxiv.org/abs/1606.00915) |
+| Resnet-34-8s   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            | [DeepLab](https://arxiv.org/abs/1606.00915) |
+| PSP-Resnet-50-8s  | VOC12  | 73.0   | n/a              | n/a         | n/a |                     | [PSPnet](https://arxiv.org/abs/1612.01105) |
+
+Some qualitative results:
 
 ![Alt text](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/segmentation_demo_preview.gif?raw=true "Title")
 
-This code has been used to train networks with this performance:
 
-| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link |
-|------------------|-----------|---------|--------------------|----------------|----|---------------------|
-| Resnet-18-8s (ours)   | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            |
-| Resnet-34-8s (ours)   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            |
-| Resnet-50-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| Resnet-101-8s (ours)    | RV-VOC12  | in prog.   | in prog.           | in prog.   | in prog    | in prog.            |
-| Resnet-101-16s (orig)  | RV-VOC11  | 69.0   | n/a              | n/a         | 180 ms. |                     |
-
-
-
-## Endovis 2017 (Segmentation)
+## Endovis 2017
 
 Implemented models were trained on Endovis 2017 segmentation dataset and the sequence number
 3 was used for validation and was not included in training dataset. 
@@ -133,17 +78,35 @@ Whole sequence can be viewed [here](https://www.youtube.com/watch?v=rYYbmYXmC0E)
 
 ![Alt text](pytorch_segmentation_detection/recipes/cityscapes/cityscapes_demo.gif?raw=true "Title")
 
-## Applications
 
-We demonstrate applications of our library for a certain tasks which are being ported/ has already been ported to mobile devices:
+## Installation
 
-1. [Sticker creation](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+This code requires:
 
-2. [Iphone's portait effect](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+1. [Pytorch](https://github.com/pytorch/pytorch).
 
-3. [Background replacement](pytorch_segmentation_detection/recipes/pascal_voc/segmentation/resnet_34_8s_demo.ipynb)
+2. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
+ 
+    Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
+ 
+3. Clone the library:
 
-4. Surgical Robotic Tools Segmentation (see below)
+ ```git clone --recursive https://github.com/warmspringwinds/pytorch-segmentation-detection```
+ 
+   And use this code snippet before you start to use the library:
+ 
+   ```python
+   import sys
+   # update with your path
+   # All the jupyter notebooks in the repository already have this
+   sys.path.append("/your/path/pytorch-segmentation-detection/")
+   sys.path.insert(0, '/your/path/pytorch-segmentation-detection/vision/')
+   ```
+   Here we use our [pytorch/vision](https://github.com/pytorch/vision) fork, which might
+   be [merged](https://github.com/pytorch/vision/pull/184) and [futher merged](https://github.com/pytorch/vision/pull/190) in a future.
+   We have added it as a submodule to our repository.
+
+4. Download segmentation or detection models that you want to use manually (links can be found below).
 
 ## About
 
