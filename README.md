@@ -18,7 +18,7 @@ You can find all the scripts that were used for training and evaluation [here](p
 This code has been used to train networks with this performance:
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy|Inference time (512x512 px. image) | Model Download Link | Related paper |
-|------------------|-----------|---------|--------------------|----------------|----|---------------------|
+|------------------|-----------|---------|--------------------|----------------|----|---------------------|----------|
 | Resnet-18-8s    | RV-VOC12  | 59.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/zxv1hb09fa8numa/resnet_18_8s_59.pth?dl=0)            | [DeepLab](https://arxiv.org/abs/1606.00915) |
 | Resnet-34-8s   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            | [DeepLab](https://arxiv.org/abs/1606.00915) |
 | PSP-Resnet-50-8s  | VOC12  | 73.0   | n/a              | n/a         | n/a |                     | [PSPnet](https://arxiv.org/abs/1612.01105) |
