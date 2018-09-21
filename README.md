@@ -1,11 +1,9 @@
 # Image Segmentation and Object Detection in Pytorch 
 
-```Pytorch-Segmentation-Detection``` is a library for image segmentation and object detection.
-
-We report results achieved on common image segmentation/object detection datasets, provide pretrained models and scripts to reproduce the results.
+```Pytorch-Segmentation-Detection``` is a library for image segmentation and object detection with report results achieved on common image segmentation/object detection datasets, pretrained models and scripts to reproduce the results.
 
 
-## Segmentation
+# Segmentation
 
 
 ## PASCAL VOC 2012
