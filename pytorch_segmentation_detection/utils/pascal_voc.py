@@ -210,13 +210,13 @@ def get_pascal_segmentation_image_annotation_filenames_pairs(pascal_root):
     # Combine so that we have [(images full filenames, annotation full names), .. ]
     # where each element in the array represent train, val, trainval sets.
     # Overall, we have 3 elements in the array.
-    temp = zip(images_full_names, annotations_full_names)
+    temp = list(zip(images_full_names, annotations_full_names))
     
     # Now we should combine the elements of images full filenames annotation full names
     # so that we have pairs of respective image plus annotation
     # [[(pair_1), (pair_1), ..], [(pair_1), (pair_2), ..] ..]
     # Overall, we have 3 elements -- representing train/val/trainval datasets
-    image_annotation_filename_pairs = map(lambda x: zip(*x), temp)
+    image_annotation_filename_pairs = map(lambda x: list(zip(*x)), temp)
     
     return image_annotation_filename_pairs
 
@@ -371,13 +371,13 @@ def get_pascal_berkeley_augmented_segmentation_image_annotation_filenames_pairs(
     # Combine so that we have [(images full filenames, annotation full names), .. ]
     # where each element in the array represent train, val, trainval sets.
     # Overall, we have 3 elements in the array.
-    temp = zip(images_full_names, annotations_full_names)
+    temp = list(zip(images_full_names, annotations_full_names))
 
     # Now we should combine the elements of images full filenames annotation full names
     # so that we have pairs of respective image plus annotation
     # [[(pair_1), (pair_1), ..], [(pair_1), (pair_2), ..] ..]
     # Overall, we have 3 elements -- representing train/val/trainval datasets
-    image_annotation_filename_pairs = map(lambda x: zip(*x), temp)
+    image_annotation_filename_pairs = map(lambda x: list(zip(*x)), temp)
     
     return image_annotation_filename_pairs
 
@@ -416,8 +416,8 @@ def get_pascal_berkeley_augmented_selected_image_annotation_filenames_pairs(pasc
                                                                       pascal_class_annotations_folder,
                                                                       annotations_extention)
     
-    image_annotation_pairs = zip(images_full_names, 
-                                 annotations_full_names)
+    image_annotation_pairs = list(zip(images_full_names, 
+                                 annotations_full_names))
     
     return image_annotation_pairs
 
@@ -456,8 +456,8 @@ def get_pascal_selected_image_annotation_filenames_pairs(pascal_root, selected_n
                                                                       pascal_class_annotations_folder,
                                                                       annotations_extention)
     
-    image_annotation_pairs = zip(images_full_names, 
-                                 annotations_full_names)
+    image_annotation_pairs = list(zip(images_full_names, 
+                                 annotations_full_names))
     
     return image_annotation_pairs
 
