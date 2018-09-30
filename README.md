@@ -21,8 +21,9 @@ This code has been used to train networks with this performance:
 | Resnet-34-8s   | RV-VOC12  | 68.0   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/91wcu6bpqezu4br/resnet_34_8s_68.pth?dl=0)            | [DeepLab](https://arxiv.org/abs/1606.00915) |
 | Resnet-50-16s   | VOC12  | 66.5   | in prog.           | in prog.  | in prog.  | in prog.        | [DeepLab](https://arxiv.org/abs/1606.00915) |
 | Resnet-50-8s   | VOC12  | 67.0   | in prog.           | in prog.  | in prog.  | in prog.        | [DeepLab](https://arxiv.org/abs/1606.00915) |
-| PSP-Resnet-50-8s  | VOC12  | 73.0   | n/a              | n/a         | n/a |     [Dropbox](https://www.dropbox.com/s/i96v4wz2599uxzc/resnet_50_psp_long.pth?dl=0)                | [PSPnet](https://arxiv.org/abs/1612.01105) |
 | Resnet-101-16s   | VOC12  | 68.6   | in prog.           | in prog.  | in prog.  | in prog.        | [DeepLab](https://arxiv.org/abs/1606.00915) |
+| PSP-Resnet-50-8s  | VOC12  | 73.0   | n/a              | n/a         | n/a |     [Dropbox](https://www.dropbox.com/s/i96v4wz2599uxzc/resnet_50_psp_long.pth?dl=0)                | [PSPnet](https://arxiv.org/abs/1612.01105) |
+
 
 Some qualitative results:
 
