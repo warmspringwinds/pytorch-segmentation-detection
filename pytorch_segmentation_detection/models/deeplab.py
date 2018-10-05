@@ -32,6 +32,8 @@ class ASPP(nn.Module):
         
         super(ASPP, self).__init__()
         
+        self.relu = nn.ReLU(inplace=True)
+        
         self.conv_1x1 = nn.Conv2d(in_channels=in_channels,
                                   out_channels=out_channels_per_branch,
                                   kernel_size=1,
@@ -67,12 +69,12 @@ class ASPP(nn.Module):
         
         input_spatial_dim = x.size()[2:]
         
-        conv_1x1_branch = self.conv_1x1_bn(self.conv_1x1(x))
-        conv_3x3_first_branch = self.conv_3x3_first_bn(self.conv_3x3_first(x))
-        conv_3x3_second_branch = self.conv_3x3_second_bn(self.conv_3x3_second(x))
-        conv_3x3_third_branch = self.conv_3x3_third_bn(self.conv_3x3_third(x))
+        conv_1x1_branch = self.relu(self.conv_1x1_bn(self.conv_1x1(x)))
+        conv_3x3_first_branch = self.relu(self.conv_3x3_first_bn(self.conv_3x3_first(x)))
+        conv_3x3_second_branch = self.relu(self.conv_3x3_second_bn(self.conv_3x3_second(x)))
+        conv_3x3_third_branch = self.relu(self.conv_3x3_third_bn(self.conv_3x3_third(x)))
         
-        global_pool_branch = self.conv_1x1_pool_bn(self.conv_1x1_pool(nn.functional.adaptive_avg_pool2d(x, 1)))
+        global_pool_branch = self.relu(self.conv_1x1_pool_bn(self.conv_1x1_pool(nn.functional.adaptive_avg_pool2d(x, 1))))
         global_pool_branch = nn.functional.upsample_bilinear(input=global_pool_branch,
                                                              size=input_spatial_dim)
         
@@ -83,6 +85,6 @@ class ASPP(nn.Module):
                                            global_pool_branch],
                                           dim=1)
         
-        features_fused = self.conv_1x1_final_bn(self.conv_1x1_final(features_concatenated))
+        features_fused = self.relu(self.conv_1x1_final_bn(self.conv_1x1_final(features_concatenated)))
         
         return features_fused
