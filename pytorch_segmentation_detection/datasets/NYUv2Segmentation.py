@@ -49,8 +49,8 @@ class NYUv2Segmentation(data.Dataset):
         images_filenames = sorted(os.listdir(images_folder_path))
         annotations_filenames = sorted(os.listdir(annotations_folder_path))
 
-        self.images_filenames = map(lambda x: os.path.join(images_folder_path, x), images_filenames)
-        self.annotations_filenames = map(lambda x: os.path.join(annotations_folder_path, x), annotations_filenames)
+        self.images_filenames = list(map(lambda x: os.path.join(images_folder_path, x), images_filenames))
+        self.annotations_filenames = list(map(lambda x: os.path.join(annotations_folder_path, x), annotations_filenames))
             
     def __len__(self):
 

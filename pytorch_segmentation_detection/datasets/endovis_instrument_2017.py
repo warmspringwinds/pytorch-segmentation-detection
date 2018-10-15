@@ -143,8 +143,8 @@ class Endovis_Instrument_2017(data.Dataset):
 
             for instrument_type in dataset_annotations_dict:
 
-                current_instrument_full_groundtruth_foldernames = map(lambda x: os.path.join(dataset_annotations_path, x),
-                                                                      dataset_annotations_dict[instrument_type] )
+                current_instrument_full_groundtruth_foldernames = list(map(lambda x: os.path.join(dataset_annotations_path, x),
+                                                                           dataset_annotations_dict[instrument_type]))
 
                 dataset_annotations_dict[instrument_type] = current_instrument_full_groundtruth_foldernames
                 
@@ -220,7 +220,7 @@ class Endovis_Instrument_2017(data.Dataset):
 
             current_left_right_foldernames = current_names_to_groundtruth_mapping[instrument_name]
 
-            current_left_right_filenames = map(lambda x: get_sorted_by_name_image_names(x), current_left_right_foldernames)
+            current_left_right_filenames = list(map(lambda x: get_sorted_by_name_image_names(x), current_left_right_foldernames))
 
             current_number_of_frames = len(current_left_right_filenames[0])
 
@@ -234,7 +234,7 @@ class Endovis_Instrument_2017(data.Dataset):
             # In case when there is just one instrument of a particular type,
             # we will have a tuple of size one
             # We also convert the tuple to lists outright using map
-            current_instrument_annotation_filenames = map(list, zip(*current_left_right_filenames))
+            current_instrument_annotation_filenames = list(map(list, zip(*current_left_right_filenames)))
 
             for index, current_dict in enumerate(overall_list):
 
@@ -274,10 +274,10 @@ class Endovis_Instrument_2017(data.Dataset):
             current_left_right_filenames_pair = annotations_dict[instrument_name]
 
             # Read all the annotation images
-            current_left_right_numpy_pair = map(io.imread, current_left_right_filenames_pair)
+            current_left_right_numpy_pair = list(map(io.imread, current_left_right_filenames_pair))
             
             # Some annotation files has 2 dims, some 3 dims. Making it consistent here
-            current_left_right_numpy_pair = map(self.remove_third_dim_in_annotation_file, current_left_right_numpy_pair)
+            current_left_right_numpy_pair = list(map(self.remove_third_dim_in_annotation_file, current_left_right_numpy_pair))
             
             # Merge all the annotation labels into one annotation image
             current_merged_numpy = reduce(lambda x, y: merge_left_and_right_annotations_v2(x, y, self.parts_class_labels[1:]),
