@@ -23,7 +23,7 @@ class Cityscapes(data.Dataset):
     # in the annotation images into train labels
     # Some variables in the annotatio are ignore for example
     # See utils.cityscapes for more details
-    ordered_train_labels = np.asarray( map(lambda x: x.trainId, cityscapes_labels) )
+    ordered_train_labels = np.asarray( list(map(lambda x: x.trainId, cityscapes_labels)) )
     
     number_of_classes = 19
 
