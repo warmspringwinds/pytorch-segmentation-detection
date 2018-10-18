@@ -23,7 +23,7 @@ This code has been used to train networks with this performance:
 | Resnet-50-8s   | VOC12  | 67.0   | in prog.           | in prog.  | in prog.  | in prog.        | [DeepLab](https://arxiv.org/abs/1606.00915) |
 | Resnet-50-8s-deep-sup   | VOC12  | 67.1   | in prog.           | in prog.  | in prog.  | in prog.        | [DeepLab](https://arxiv.org/abs/1606.00915) |
 | Resnet-101-16s   | VOC12  | 68.6   | in prog.           | in prog.  | in prog.  | in prog.        | [DeepLab](https://arxiv.org/abs/1606.00915) |
-| PSP-Resnet-50-8s  | VOC12  | 73.0   | n/a              | n/a         | n/a |     [Dropbox](https://www.dropbox.com/s/i96v4wz2599uxzc/resnet_50_psp_long.pth?dl=0)                | [PSPnet](https://arxiv.org/abs/1612.01105) |
+| PSP-Resnet-50-8s  | VOC12  | 73.6   | n/a              | n/a         | n/a |     in prog.                | [PSPnet](https://arxiv.org/abs/1612.01105) |
 
 
 Some qualitative results:
