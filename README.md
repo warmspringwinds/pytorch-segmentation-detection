@@ -74,6 +74,7 @@ Qualitative results (on validation sequence):
 |------------------|-----------|---------|--------------------|----------------|----|---------------------|
 | Resnet-18-8s   | Validation set  | 60.0   | in prog.           | in prog.       |28 ms.| [Dropbox](https://www.dropbox.com/s/vdy4sqkk2s3f5v5/resnet_18_8s_cityscapes_best.pth?dl=0)            |
 | Resnet-34-8s   | Validation set  | 69.1   | in prog.           | in prog.  | 50 ms.  | [Dropbox](https://www.dropbox.com/s/jeaw9ny0jtl60uc/resnet_34_8s_cityscapes_best.pth?dl=0)           |
+| Resnet-50-16s-PSP   | Validation set  | 71.2   | in prog.           | in prog.  | in prog.  | in prog.           |
 
 Qualitative results (on validation sequence):
 
