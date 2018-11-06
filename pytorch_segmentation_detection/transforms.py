@@ -325,11 +325,11 @@ class Copy(object):
         
         if isinstance(input_to_duplicate, torch.Tensor):
             
-            for i in xrange(self.number_of_copies):
+            for i in range(self.number_of_copies):
                 duplicates_array.append(input_to_duplicate.clone())
         else:
             
-            for i in xrange(self.number_of_copies):
+            for i in range(self.number_of_copies):
                 duplicates_array.append(input_to_duplicate.copy())
             
         return duplicates_array
