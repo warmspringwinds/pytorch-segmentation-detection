@@ -50,7 +50,7 @@ def create_dataset_paginated_display_widget(dataset_obj, number_of_images_per_pa
     
     def display_page_callback(page_number):
     
-        for current_image_number in xrange(number_of_images_per_page):
+        for current_image_number in range(number_of_images_per_page):
 
             current_global_index = page_number * number_of_images_per_page + current_image_number
 
