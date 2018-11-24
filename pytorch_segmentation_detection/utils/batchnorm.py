@@ -19,6 +19,11 @@ import torch.nn as nn
 # net.apply(restore_original_settings_of_bn_layers)
 
 
+# Why this works --
+# https://pytorch.org/docs/master/nn.html#torch.nn.BatchNorm1d
+# if you set momentum property in batchnorm layer, it will
+# compute cumulutive average or just simple average of observed
+# values
 
 def adjust_bn_layers_to_compute_populatin_stats(module):
       
