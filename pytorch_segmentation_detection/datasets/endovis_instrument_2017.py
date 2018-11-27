@@ -130,7 +130,7 @@ class Endovis_Instrument_2017(data.Dataset):
         
         instrument_names_to_groundtruth_folder_mapping = copy.deepcopy(self.instrument_names_to_groundtruth_folder_mapping_template)
         
-        for dataset_number in xrange(0, self.number_of_datasets):
+        for dataset_number in range(0, self.number_of_datasets):
 
             # Changes the name depending on the dataset number
             dataset_subfolder_name = self.sequence_subfolder_template.format(dataset_number + 1)
@@ -185,7 +185,7 @@ class Endovis_Instrument_2017(data.Dataset):
         # that are not in validation set
         training_dataset_number_list = []
         
-        for dataset_number in xrange(self.number_of_datasets):
+        for dataset_number in range(self.number_of_datasets):
             
             if( dataset_number not in validation_dataset_number_list ):
                 
@@ -228,7 +228,7 @@ class Endovis_Instrument_2017(data.Dataset):
 
             if not overall_list:
 
-                overall_list = [{} for i in xrange(current_number_of_frames)]
+                overall_list = [{} for i in range(current_number_of_frames)]
 
             # Zip the left and right filenames into tuples
             # In case when there is just one instrument of a particular type,
