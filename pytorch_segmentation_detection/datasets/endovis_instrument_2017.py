@@ -10,6 +10,8 @@ from PIL import Image
 
 from ..utils.endovis_instrument import merge_left_and_right_annotations_v2
 
+from functools import reduce
+
 
 def crop_actual_surgical_image(image):
     
