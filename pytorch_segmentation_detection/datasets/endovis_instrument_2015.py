@@ -124,7 +124,7 @@ class Endovis_Instrument_2015(data.Dataset):
         where all the images and annotations are stored as plain jpg and png images.
         """
         
-        datasets_numbers = set(xrange(1, 5))
+        datasets_numbers = set(list(range(1, 5)))
 
         if train:
             
@@ -189,7 +189,7 @@ class Endovis_Instrument_2015(data.Dataset):
             current_dataset_number_of_images = images_reader.get_length()
 
 
-            for current_image_number in xrange(current_dataset_number_of_images):
+            for current_image_number in range(current_dataset_number_of_images):
 
                 # We need to merge two separate annotation files in the first dataset
                 if current_dataset_number == 1:
