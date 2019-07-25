@@ -168,9 +168,10 @@ def conv_flops_counter_hook(conv_module, input, output):
     kernel_height, kernel_width = conv_module.kernel_size
     in_channels = conv_module.in_channels
     out_channels = conv_module.out_channels
+    groups = conv_module.groups
     
     # We count multiply-add as 2 flops
-    conv_per_position_flops = 2 * kernel_height * kernel_width * in_channels * out_channels
+    conv_per_position_flops = 2 * kernel_height * kernel_width * in_channels * out_channels / groups
     
     active_elements_count = batch_size * output_height * output_width
     
