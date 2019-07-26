@@ -3,6 +3,7 @@ import sys, os
 import pydicom
 import numpy as np
 import pandas as pd
+from PIL import Image
 import torch.utils.data as data
 
 from ..utils.rle_mask_encoding import rle2mask
@@ -60,6 +61,9 @@ class LungSegmentation(data.Dataset):
         else:
             
             annotation = np.zeros((1024, 1024))
+            
+        image = Image.fromarray(image)
+        annotation = Image.fromarray(annotation)
         
         if self.joint_transform is not None:
             
