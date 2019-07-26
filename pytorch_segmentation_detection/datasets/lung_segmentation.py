@@ -17,6 +17,36 @@ from ..utils.rle_mask_encoding import rle2mask
 # file on each iteration -- think about optimizing it
 
 
+def merge_masks_of_duplicated_images(annotation_df):
+    
+    annotation_df_without_duplicates = annotation_df.drop_duplicates(subset='ImageId', keep='first')
+
+    res = annotation_df[annotation_df.duplicated(['ImageId'], keep=False)]
+
+    unique_names = res['ImageId'].unique()
+
+    for unique_name in unique_names:
+
+        all_masks_rows = res[res['ImageId'] == unique_name]
+
+        merged_mask_np = None
+
+        for index, mask_row in all_masks_rows.iterrows():
+
+            mask_np = rle2mask( mask_row[" EncodedPixels"], width=1024, height=1024 )
+
+            if merged_mask_np is None:
+
+                merged_mask_np = mask_np
+            else:
+                merged_mask_np[mask_np != 0] = 255
+
+        merged_mask_rle = mask2rle(merged_mask_np, width=1024, height=1024)
+
+        annotation_df_without_duplicates.loc[annotation_df_without_duplicates['ImageId'] == unique_name, [' EncodedPixels']] = merged_mask_rle
+    
+    return annotation_df_without_duplicates
+
 
 class LungSegmentation(data.Dataset):
     
@@ -31,23 +61,40 @@ class LungSegmentation(data.Dataset):
                 
         self.train_images_folder_path = train_images_folder_path
         
+        self.annotation_df = pd.read_csv(annotation_csv_file_path)
         
         images_filenames = sorted(glob.glob(train_images_folder_path + "/*/*/*.dcm"))
         
-        train_portion = 0.8
-        num_train = len(images_filenames)
-        split = int(np.floor(train_portion * num_train))
+        trancuted_name_and_full_names_lookup_dict = {}
+
+        for images_filename in images_filenames:
+
+            trancuted_name_and_full_names_lookup_dict.update({images_filename.split('/')[-1][:-4]: images_filename})
         
         if train:
-            
-            self.images_filenames = images_filenames[:split]
-            
+        
+            # Overall 8296
+            negative_examples = self.annotation_df.loc[self.annotation_df[' EncodedPixels'] == ' -1'][250:]['ImageId'].unique()
+
+            # Overall 2379
+            posititve_examples = self.annotation_df.loc[self.annotation_df[' EncodedPixels'] != ' -1'][250:]['ImageId'].unique()
         else:
             
-            self.images_filenames = images_filenames[split:]
+            # Overall 8296
+            negative_examples = self.annotation_df.loc[self.annotation_df[' EncodedPixels'] == ' -1'][:250]['ImageId'].unique()
+
+            # Overall 2379
+            posititve_examples = self.annotation_df.loc[self.annotation_df[' EncodedPixels'] != ' -1'][:250]['ImageId'].unique()
+
+        all_data = list(negative_examples) + list(posititve_examples)
+
+        final = []
+
+        for truncated_name in all_data:
+
+            final.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
         
-        
-        self.annotation_df = pd.read_csv(annotation_csv_file_path)
+        self.images_filenames = final
         
             
     def __len__(self):
