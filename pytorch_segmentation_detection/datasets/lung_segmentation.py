@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import torch.utils.data as data
+import random
 
 from ..utils.rle_mask_encoding import rle2mask
 
@@ -58,6 +59,8 @@ class LungSegmentation(data.Dataset):
                  joint_transform=None):
         
         self.joint_transform = joint_transform
+        
+        self.train = train
                 
         self.train_images_folder_path = train_images_folder_path
         
@@ -87,12 +90,30 @@ class LungSegmentation(data.Dataset):
             posititve_examples = self.annotation_df.loc[self.annotation_df[' EncodedPixels'] != ' -1'][:250]['ImageId'].unique()
 
         all_data = list(negative_examples) + list(posititve_examples)
-
+        
         final = []
 
         for truncated_name in all_data:
 
             final.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
+            
+        if train:
+            
+            negative_examples = list(negative_examples)
+            positive_examples = list(posititve_examples)
+            
+            self.negative_examples = []
+            self.positive_examples = []
+            
+            for truncated_name in negative_examples:
+                
+                    self.negative_examples.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
+            
+            for truncated_name in positive_examples:
+                
+                    self.positive_examples.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
+            
+            
         
         self.images_filenames = final
         
@@ -105,25 +126,34 @@ class LungSegmentation(data.Dataset):
         
         image_filename = self.images_filenames[index]
         
+        if self.train:
+            
+            if random.random() < 0.2:
+                
+                image_filename = random.choice(self.negative_examples)
+            else:
+                
+                image_filename = random.choice(self.positive_examples)
+       
         image = pydicom.dcmread(image_filename).pixel_array
-        
+
         image_filename_stripped = image_filename.split('/')[-1][:-4]
-        
+
         annotation_rle = self.annotation_df.loc[self.annotation_df['ImageId'] == image_filename_stripped][' EncodedPixels'].values[0]
-        
+
         if annotation_rle != ' -1':
-        
+
             annotation = rle2mask(annotation_rle, width=1024, height=1024).transpose()
             annotation[annotation != 0] = 1
         else:
-            
+
             annotation = np.zeros((1024, 1024))
-            
+
         image = Image.fromarray(image)
         annotation = Image.fromarray(annotation)
-        
+
         if self.joint_transform is not None:
-            
+
             image, annotation = self.joint_transform([image, annotation])
             
         return image, annotation
