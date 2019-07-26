@@ -58,6 +58,7 @@ class LungSegmentation(data.Dataset):
         if annotation_rle != ' -1':
         
             annotation = rle2mask(annotation_rle, width=1024, height=1024).transpose()
+            annotation[annotation != 0] = 1
         else:
             
             annotation = np.zeros((1024, 1024))
