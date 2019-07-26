@@ -8,6 +8,15 @@ import torch.utils.data as data
 
 from ..utils.rle_mask_encoding import rle2mask
 
+# TODO:
+# (1)
+# Have found ~900 duplicated annotations
+# df_duplicated = df[df.duplicated(['ImageId'])]
+# (2)
+# The loader is probably slow since we open a dicom
+# file on each iteration -- think about optimizing it
+
+
 
 class LungSegmentation(data.Dataset):
     
