@@ -9,13 +9,6 @@ import random
 
 from ..utils.rle_mask_encoding import rle2mask
 
-# TODO:
-# (1)
-# Have found ~900 duplicated annotations
-# df_duplicated = df[df.duplicated(['ImageId'])]
-# (2)
-# The loader is probably slow since we open a dicom
-# file on each iteration -- think about optimizing it
 
 
 def merge_masks_of_duplicated_images(annotation_df):
@@ -47,6 +40,7 @@ def merge_masks_of_duplicated_images(annotation_df):
         annotation_df_without_duplicates.loc[annotation_df_without_duplicates['ImageId'] == unique_name, [' EncodedPixels']] = merged_mask_rle
     
     return annotation_df_without_duplicates
+
 
 
 class LungSegmentation(data.Dataset):
@@ -97,21 +91,21 @@ class LungSegmentation(data.Dataset):
 
             final.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
             
-        if train:
+#         if train:
             
-            negative_examples = list(negative_examples)
-            positive_examples = list(posititve_examples)
+#             negative_examples = list(negative_examples)
+#             positive_examples = list(posititve_examples)
             
-            self.negative_examples = []
-            self.positive_examples = []
+#             self.negative_examples = []
+#             self.positive_examples = []
             
-            for truncated_name in negative_examples:
+#             for truncated_name in negative_examples:
                 
-                    self.negative_examples.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
+#                     self.negative_examples.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
             
-            for truncated_name in positive_examples:
+#             for truncated_name in positive_examples:
                 
-                    self.positive_examples.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
+#                     self.positive_examples.append(trancuted_name_and_full_names_lookup_dict[truncated_name])
             
             
         
@@ -126,16 +120,20 @@ class LungSegmentation(data.Dataset):
         
         image_filename = self.images_filenames[index]
         
-        if self.train:
+#         if self.train:
             
-            if random.random() < 0.2:
+#             if random.random() < 0.5:
                 
-                image_filename = random.choice(self.negative_examples)
-            else:
+#                 image_filename = random.choice(self.negative_examples)
+#             else:
                 
-                image_filename = random.choice(self.positive_examples)
+#                 image_filename = random.choice(self.positive_examples)
        
         image = pydicom.dcmread(image_filename).pixel_array
+        
+        image = np.dstack((image, image, image))
+        
+        #print(image.shape)
 
         image_filename_stripped = image_filename.split('/')[-1][:-4]
 
@@ -148,7 +146,9 @@ class LungSegmentation(data.Dataset):
         else:
 
             annotation = np.zeros((1024, 1024))
-
+        
+        
+        
         image = Image.fromarray(image)
         annotation = Image.fromarray(annotation)
 
